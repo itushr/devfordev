@@ -1,8 +1,7 @@
-import LoginForm from '@/components/LoginForm'
 import Logo from '@/components/Logo'
-import Link from 'next/link'
+import { ReactNode } from 'react'
 
-const page = () => {
+const AuthLayout = ({ children }: { children : ReactNode}) => {
     return (
         <div className='flex flex-col w-7xl min-h-screen mx-auto justify-center'>
             <div className='flex w-full border rounded-2xl'>
@@ -36,21 +35,16 @@ const page = () => {
                             </svg>
                         </div>
                     </div>
-                    <div className='flex items-center w-full gap-2 mt-5 text-accent px-10'>
+                    <div className='flex items-center w-full gap-2 mt-5 text-accent px-10 font-mono'>
                         <div className='h-px bg-accent flex-1'></div>
                         or
                         <div className='h-px bg-accent flex-1'></div>
                     </div>
-                    <div className='w-full px-10 mt-10'>
-                        <LoginForm />
-                    </div>
-                    <div className='w-full px-10 mt-10 font-mono'>
-                        Already a member? <Link href="/login" className='underline'>login</Link>
-                    </div>
+                    { children }
                 </div>
             </div>
         </div>
     )
 }
 
-export default page
+export default AuthLayout
