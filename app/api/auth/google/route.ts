@@ -1,45 +1,42 @@
 import { NextResponse } from "next/server";
+import { OAuth2Client } from "google-auth-library";
 import { connectDB } from "@/lib/db";
 import { generateToken } from "@/lib/jwt";
-import { parseRequestBody } from "@/utils/parseRequestBody";
 import User from "@/models/User";
+import { parseRequestBody } from "@/utils/parseRequestBody";
+
+const oauth2Client = new OAuth2Client(
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
 
 export async function POST(req: Request) {
   try {
-    const { idToken } = await parseRequestBody(req);
+    const { code } = await parseRequestBody(req);
 
-    if (!idToken) {
-      return NextResponse.json(
-        { success: false, message: "Token is required." },
-        { status: 400 }
-      );
+    if (!code) {
+      return NextResponse.json({ success: false, message: "Code required" }, { status: 400 });
     }
 
-    // 1. Fetch user info using Google's UserInfo API
-    const userRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: { Authorization: `Bearer ${idToken}` },
+    const { tokens } = await oauth2Client.getToken({
+      code,
+      redirect_uri: "postmessage"
     });
 
-    if (!userRes.ok) {
-      return NextResponse.json(
-        { success: false, message: "Invalid or expired Google token." },
-        { status: 401 }
-      );
+    const ticket = await oauth2Client.verifyIdToken({
+      idToken: tokens.id_token!,
+      audience: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email) {
+      return NextResponse.json({ success: false, message: "Invalid payload" }, { status: 400 });
     }
 
-    const payload = await userRes.json();
     const { sub: googleId, email, name, picture } = payload;
-
-    if (!email) {
-      return NextResponse.json(
-        { success: false, message: "Email not provided by Google." },
-        { status: 400 }
-      );
-    }
 
     await connectDB();
 
-    // 2. Find or create user in database
     let user = await User.findOne({
       $or: [{ googleId }, { email: email.toLowerCase() }],
     });
@@ -63,16 +60,8 @@ export async function POST(req: Request) {
       });
     }
 
-    // 3. Issue standard app JWT and cookie
-    const token = generateToken({
-      id: user._id.toString(),
-      role: user.role,
-    });
-
-    const response = NextResponse.json({
-      success: true,
-      message: "Google login successful.",
-    });
+    const token = generateToken({ id: user._id.toString(), role: user.role });
+    const response = NextResponse.json({ success: true, message: "Login successful" });
 
     response.cookies.set({
       name: "token",
@@ -87,10 +76,6 @@ export async function POST(req: Request) {
     return response;
   } catch (error) {
     console.error("Google Auth Error:", error);
-
-    return NextResponse.json(
-      { success: false, message: "Google authentication failed." },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Authentication failed" }, { status: 500 });
   }
 }

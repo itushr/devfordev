@@ -6,14 +6,15 @@ import { ReactNode } from "react";
 
 function GoogleAuthTrigger({ children }: { children: ReactNode }) {
     const router = useRouter();
+
     const loginWithGoogle = useGoogleLogin({
-        flow: "implicit",
-        onSuccess: async (tokenResponse) => {
+        flow: "auth-code", 
+        onSuccess: async (codeResponse) => {
             try {
                 const res = await fetch("/api/auth/google", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ idToken: tokenResponse.access_token }),
+                    body: JSON.stringify({ code: codeResponse.code }),
                 });
 
                 const data = await res.json();
@@ -26,7 +27,6 @@ function GoogleAuthTrigger({ children }: { children: ReactNode }) {
                 }
             } catch (error) {
                 console.error("Authentication Request Failed:", error);
-                alert("Something went wrong! Please try again!");
             }
         },
         onError: (errorResponse) => {
@@ -50,11 +50,7 @@ function GoogleAuthTrigger({ children }: { children: ReactNode }) {
 
 export default function GoogleAuth({ children }: { children: ReactNode }) {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
-    if (!clientId) {
-        console.error("Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID in environment variables.");
-        return null;
-    }
+    if (!clientId) return null;
 
     return (
         <GoogleOAuthProvider clientId={clientId}>
