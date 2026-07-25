@@ -1,27 +1,14 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import bcrypt from "bcryptjs";
-import { generateToken } from "@/lib/jwt";
-
 import { connectDB } from "@/lib/db";
+import { generateToken } from "@/lib/jwt";
+import { compareHash } from "@/lib/bcryptjs";
+import { loginSchema } from "@/validations/auth";
+import { parseRequestBody } from "@/utils/parseRequestBody";
 import User from "@/models/User";
-
-const loginSchema = z.object({
-    login: z
-        .string()
-        .trim()
-        .min(1, "Email or username is required"),
-
-    password: z
-        .string()
-        .min(1, "Password is required"),
-});
 
 export async function POST(req: Request) {
     try {
-        const body = Object.fromEntries(
-            new URLSearchParams(await req.text())
-        );
+        const body = await parseRequestBody(req);
 
         const result = loginSchema.safeParse(body);
 
@@ -56,7 +43,7 @@ export async function POST(req: Request) {
             );
         }
 
-        const passwordMatched = await bcrypt.compare(
+        const passwordMatched = await compareHash(
             password,
             user.password
         );

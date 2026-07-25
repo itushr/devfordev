@@ -1,35 +1,14 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import bcrypt from "bcryptjs";
-import { generateToken } from "@/lib/jwt";
-
 import { connectDB } from "@/lib/db";
+import { generateToken } from "@/lib/jwt";
+import { generateHash } from "@/lib/bcryptjs";
+import { registerSchema } from "@/validations/auth";
+import { parseRequestBody } from "@/utils/parseRequestBody";
 import User from "@/models/User";
-
-const registerSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(3, "Name must be at least 3 characters")
-        .max(50),
-
-    email: z
-        .string()
-        .trim()
-        .email("Invalid email address")
-        .toLowerCase(),
-
-    password: z
-        .string()
-        .min(6, "Password must be at least 6 characters")
-        .max(100),
-});
 
 export async function POST(req: Request) {
     try {
-        const body = Object.fromEntries(
-            new URLSearchParams(await req.text())
-        );
+        const body = await parseRequestBody(req);
 
         const result = registerSchema.safeParse(body);
 
@@ -59,7 +38,7 @@ export async function POST(req: Request) {
             );
         }
 
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await generateHash(password);
 
         const username = email.split("@")[0];
 
