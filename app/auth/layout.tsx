@@ -1,3 +1,4 @@
+import GoogleAuth from '@/components/GoogleAuth'
 import Logo from '@/components/Logo'
 import { ReactNode } from 'react'
 
@@ -14,9 +15,11 @@ const AuthLayout = ({ children }: { children : ReactNode}) => {
                 <div className='flex-1 px-10 py-24 flex flex-col items-center justify-center'>
                     <div className='h-18 w-full flex items-center justify-center gap-10'>
                         <div className='w-16 h-16 rounded-full border p-3 cursor-pointer'>
+                            <GoogleAuth>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                                 <path d="M564 325.8C564 467.3 467.1 568 324 568C186.8 568 76 457.2 76 320C76 182.8 186.8 72 324 72C390.8 72 447 96.5 490.3 136.9L422.8 201.8C334.5 116.6 170.3 180.6 170.3 320C170.3 406.5 239.4 476.6 324 476.6C422.2 476.6 459 406.2 464.8 369.7L324 369.7L324 284.4L560.1 284.4C562.4 297.1 564 309.3 564 325.8z" fill="currentColor" />
                             </svg>
+                            </GoogleAuth>
                         </div>
                         <div className='w-16 h-16 rounded-full border p-3 cursor-pointer'>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
@@ -35,6 +38,7 @@ const AuthLayout = ({ children }: { children : ReactNode}) => {
                             </svg>
                         </div>
                     </div>
+
                     <div className='flex items-center w-full gap-2 mt-5 text-accent px-10 font-mono'>
                         <div className='h-px bg-accent flex-1'></div>
                         or
