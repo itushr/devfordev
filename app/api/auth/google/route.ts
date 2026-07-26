@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import { generateToken } from "@/lib/jwt";
 import User from "@/models/User";
 import { parseRequestBody } from "@/utils/parseRequestBody";
+import { generateUsername } from "@/utils/generateUsername";
 
 const oauth2Client = new OAuth2Client(
   process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -48,12 +49,12 @@ export async function POST(req: Request) {
         await user.save();
       }
     } else {
-      const baseUsername = name ? name.replace(/\s+/g, "").toLowerCase() : email.split("@")[0];
-      const uniqueUsername = `${baseUsername}_${Math.floor(1000 + Math.random() * 9000)}`;
-
       user = await User.create({
         email: email.toLowerCase(),
-        username: uniqueUsername,
+        username: generateUsername({
+          name,
+          email
+        }),
         googleId,
         avatar: picture,
         role: "user",

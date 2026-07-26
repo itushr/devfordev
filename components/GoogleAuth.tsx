@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
@@ -30,13 +30,14 @@ function GoogleAuthTrigger({ children }: { children: ReactNode }) {
             }
         },
         onError: (errorResponse) => {
-            console.error("Google Login Failed:", errorResponse);
+            alert("Something Went Wrong!");
         },
     });
 
     return (
         <div
             onClick={() => loginWithGoogle()}
+            className="w-full h-full"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
