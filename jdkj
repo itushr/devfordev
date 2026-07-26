@@ -1,0 +1,17 @@
+[33m7a8323e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m ux: improve accessibility
+[33m18f0d36[m feat: add back button
+[33mf2e8398[m style: fix logo position
+[33m44357b2[m feat: config zustand
+[33m273b203[m style: make auth ui responsive
+[33mfa347ff[m refactor: sync explicit flow for all auth providers
+[33m017ec72[m refactor: code cleaning
+[33m92afba2[m feat: discord login method
+[33m64e2f50[m feat: github auth method
+[33m2c3f92b[m refactor(auth/google): switch from implicit to explicit flow
+[33m85a53c0[m feat: google authentication
+[33m87c6b40[m refactor(api): improved auth route code
+[33mff53ce9[m api: auth
+[33ma83ae28[m ui: auth ui
+[33m771e23c[m ui auth/2
+[33mf2de0ff[m initial commit
+[33m2355946[m Initial commit
