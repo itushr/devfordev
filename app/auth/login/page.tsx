@@ -8,7 +8,7 @@ const page = () => {
                 <LoginForm />
             </div>
             <div className='w-full md:px-10 mt-10'>
-                First time visitor? <Link href="/auth/register" className='underline'>register</Link>
+                First time visitor? <Link href="/auth/register" className='underline focus:px-2 py-1'>register</Link>
             </div>
         </>
     )

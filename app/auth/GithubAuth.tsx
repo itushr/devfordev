@@ -2,8 +2,14 @@
 
 import { ReactNode } from "react";
 
-export default function GitHubAuth({ children }: { children: ReactNode }) {
-  const handleGitHubLogin = () => {
+export default function GitHubAuth({
+  children,
+  className = ""
+}: {
+  children: React.ReactNode;
+  className: string
+}) {
+  const login = () => {
     const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
     if (!clientId) {
@@ -21,11 +27,12 @@ export default function GitHubAuth({ children }: { children: ReactNode }) {
 
   return (
     <div
-      onClick={handleGitHubLogin}
+      onClick={login}
       role="button"
+      className={className}
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") handleGitHubLogin();
+        if (e.key === "Enter" || e.key === " ") login();
       }}
     >
       {children}

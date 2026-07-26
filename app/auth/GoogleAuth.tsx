@@ -2,8 +2,10 @@
 
 export default function GoogleLoginButton({
     children,
+    className=""
 }: {
     children: React.ReactNode;
+    className: string
 }) {
     function login() {
         const params = new URLSearchParams({
@@ -22,8 +24,8 @@ export default function GoogleLoginButton({
     return (
         <div
             onClick={login}
-            className="w-full h-full"
             role="button"
+            className={className}
             tabIndex={0}
             onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ")

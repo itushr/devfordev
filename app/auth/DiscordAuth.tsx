@@ -2,8 +2,14 @@
 
 import { ReactNode } from "react";
 
-export default function DiscordAuth({ children }: { children: ReactNode }) {
-  const handleDiscordLogin = () => {
+export default function DiscordAuth({
+  children,
+  className = ""
+}: {
+  children: React.ReactNode;
+  className: string
+}) {
+  const login = () => {
     const clientId = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID;
     const redirectUri = encodeURIComponent(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI!);
     const scope = encodeURIComponent("identify email");
@@ -14,8 +20,16 @@ export default function DiscordAuth({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div onClick={handleDiscordLogin} className="w-full h-full">
-      { children }
+    <div
+      onClick={login}
+      role="button"
+      className={className}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ")
+          login();
+      }}>
+      {children}
     </div>
   );
 }
