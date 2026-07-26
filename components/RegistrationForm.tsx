@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import InputBox from "./ui/inputBox";
 
 const registerSchema = z.object({
     name: z
@@ -21,9 +22,6 @@ const registerSchema = z.object({
     password: z
         .string()
         .min(6, "Password must be at least 6 characters")
-        // .regex(/[A-Z]/, "Must contain an uppercase letter")
-        // .regex(/[a-z]/, "Must contain a lowercase letter")
-        // .regex(/[0-9]/, "Must contain a number"),
 });
 
 type RegisterForm = z.infer<typeof registerSchema>;
@@ -37,7 +35,7 @@ export default function RegistrationForm() {
         formState: { errors, isSubmitting },
     } = useForm<RegisterForm>({
         resolver: zodResolver(registerSchema),
-         mode: "onChange",
+        mode: "onChange",
         reValidateMode: "onChange",
         defaultValues: {
             name: "",
@@ -61,23 +59,17 @@ export default function RegistrationForm() {
                     Name
                 </label>
 
-                <div className="flex items-center gap-2 border rounded-md overflow-hidden">
-                    <div className="flex items-center justify-center border-r px-3 py-3">
-                        <User className="size-5" />
-                    </div>
-
-                    <input
-                        id="name"
-                        type="text"
-                        placeholder="Your Name"
-                        autoComplete="name"
-                        className="outline-none w-full"
-                        {...register("name")}
-                    />
-                </div>
+                <InputBox
+                    prefix={<User className="size-5" /> as any}
+                    id="name"
+                    type="text"
+                    placeholder="Your Name"
+                    autoComplete="name"
+                    {...register("name")}
+                />
 
                 {errors.name && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-red-500">
                         {errors.name.message}
                     </p>
                 )}
@@ -89,23 +81,17 @@ export default function RegistrationForm() {
                     Email
                 </label>
 
-                <div className="flex items-center gap-2 border rounded-md overflow-hidden">
-                    <div className="flex items-center justify-center border-r px-3 py-3">
-                        <Mail className="size-5" />
-                    </div>
-
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email Address"
-                        autoComplete="email"
-                        className="outline-none w-full"
-                        {...register("email")}
-                    />
-                </div>
+                <InputBox
+                    prefix={<Mail className="size-5" /> as any}
+                    id="email"
+                    type="text"
+                    placeholder="Email Address"
+                    autoComplete="email"
+                    {...register("email")}
+                />
 
                 {errors.email && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-red-500">
                         {errors.email.message}
                     </p>
                 )}
@@ -117,40 +103,23 @@ export default function RegistrationForm() {
                     Password
                 </label>
 
-                <div className="flex items-center gap-2 border rounded-md overflow-hidden">
-                    <div className="flex items-center justify-center border-r px-3 py-3">
-                        <Key className="size-5" />
-                    </div>
-
-                    <input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        autoComplete="new-password"
-                        className="outline-none w-full"
-                        {...register("password")}
-                    />
-
-                    <button
-                        type="button"
-                        className="flex items-center justify-center border-l px-3 py-3"
-                        aria-label={
-                            showPassword
-                                ? "Hide password"
-                                : "Show password"
-                        }
-                        onClick={() => setShowPassword((v) => !v)}
-                    >
-                        {showPassword ? (
-                            <EyeOff className="size-4" />
-                        ) : (
-                            <Eye className="size-4" />
-                        )}
-                    </button>
-                </div>
+                <InputBox
+                    prefix={<Key className="size-5" /> as any}
+                    suffix={showPassword ? (
+                        <EyeOff className="size-4" />
+                    ) : (
+                        <Eye className="size-4" />
+                    )}
+                    suffixOnClick={() => setShowPassword((v) => !v)}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    autoComplete="new-password"
+                    {...register("password")}
+                />
 
                 {errors.password && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-red-500">
                         {errors.password.message}
                     </p>
                 )}

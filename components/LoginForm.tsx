@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Key, Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import InputBox from "./ui/inputBox";
 
 const loginSchema = z.object({
     identifier: z
@@ -53,23 +54,17 @@ export default function LoginForm() {
                     Email or Username
                 </label>
 
-                <div className="flex items-center gap-2 border rounded-md overflow-hidden">
-                    <div className="flex items-center justify-center border-r px-3 py-3">
-                        <Mail className="size-5" />
-                    </div>
-
-                    <input
-                        id="identifier"
-                        type="text"
-                        placeholder="Email or Username"
-                        autoComplete="username"
-                        className="w-full outline-none"
-                        {...register("identifier")}
-                    />
-                </div>
+                <InputBox
+                    prefix={<Mail className="size-5" /> as any}
+                    id="identifier"
+                    type="text"
+                    placeholder="Email or Username"
+                    autoComplete="username"
+                    {...register("identifier")}
+                />
 
                 {errors.identifier && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-red-500">
                         {errors.identifier.message}
                     </p>
                 )}
@@ -81,40 +76,23 @@ export default function LoginForm() {
                     Password
                 </label>
 
-                <div className="flex items-center gap-2 border rounded-md overflow-hidden">
-                    <div className="flex items-center justify-center border-r px-3 py-3">
-                        <Key className="size-5" />
-                    </div>
-
-                    <input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        className="w-full outline-none"
-                        {...register("password")}
-                    />
-
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword((v) => !v)}
-                        aria-label={
-                            showPassword
-                                ? "Hide password"
-                                : "Show password"
-                        }
-                        className="flex items-center justify-center border-l px-3 py-3"
-                    >
-                        {showPassword ? (
-                            <EyeOff className="size-4" />
-                        ) : (
-                            <Eye className="size-4" />
-                        )}
-                    </button>
-                </div>
+                <InputBox
+                    prefix={<Key className="size-5" /> as any}
+                    suffix={showPassword ? (
+                        <EyeOff className="size-4" />
+                    ) : (
+                        <Eye className="size-4" />
+                    )}
+                    suffixOnClick={() => setShowPassword((v) => !v)}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    autoComplete="current-password"
+                    {...register("password")}
+                />
 
                 {errors.password && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-red-500">
                         {errors.password.message}
                     </p>
                 )}

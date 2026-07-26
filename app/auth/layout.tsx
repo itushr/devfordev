@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import GoogleAuth from '@/app/auth/GoogleAuth'
 import GitHubAuth from '@/app/auth/GithubAuth'
 import DiscordAuth from '@/app/auth/DiscordAuth'
-import BackButton from './BackButton'
+import BackButton from '../../components/BackButton'
 import GuestAuth from './GuestAuth'
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
