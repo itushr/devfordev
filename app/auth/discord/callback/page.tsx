@@ -12,7 +12,7 @@ export default function DiscordCallbackPage() {
     const code = searchParams.get("code");
 
     if (!code) {
-      alert("No authorization code returned from Discord.");
+      alert("Something Went Wrong!");
       router.push("/login");
       return;
     }
@@ -39,7 +39,6 @@ export default function DiscordCallbackPage() {
         }
       } catch (error) {
         console.error("Discord Auth Error:", error);
-        alert("Something went wrong during Discord authentication.");
         router.push("/login");
       }
     }
@@ -48,7 +47,7 @@ export default function DiscordCallbackPage() {
   }, [searchParams, router]);
 
   return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
+    <div className="h-full w-full flex justify-center items-center">
       <p>Authenticating with Discord, please wait...</p>
     </div>
   );

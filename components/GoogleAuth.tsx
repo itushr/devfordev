@@ -1,61 +1,36 @@
-"use client"
+"use client";
 
-import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
-import { ReactNode } from "react";
+export default function GoogleLoginButton({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    function login() {
+        const params = new URLSearchParams({
+            client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+            redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
+            response_type: "code",
+            scope: "openid email profile",
+            access_type: "offline",
+            prompt: "select_account",
+        });
 
-function GoogleAuthTrigger({ children }: { children: ReactNode }) {
-    const router = useRouter();
-
-    const loginWithGoogle = useGoogleLogin({
-        flow: "auth-code", 
-        onSuccess: async (codeResponse) => {
-            try {
-                const res = await fetch("/api/auth/google", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ code: codeResponse.code }),
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-                    router.push("/");
-                    router.refresh();
-                } else {
-                    alert(data.message || "Google Authentication failed");
-                }
-            } catch (error) {
-                console.error("Authentication Request Failed:", error);
-            }
-        },
-        onError: (errorResponse) => {
-            alert("Something Went Wrong!");
-        },
-    });
+        window.location.href =
+            `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+    }
 
     return (
         <div
-            onClick={() => loginWithGoogle()}
+            onClick={login}
             className="w-full h-full"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") loginWithGoogle();
+                if (e.key === "Enter" || e.key === " ")
+                    login();
             }}
         >
             {children}
         </div>
-    );
-}
-
-export default function GoogleAuth({ children }: { children: ReactNode }) {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    if (!clientId) return null;
-
-    return (
-        <GoogleOAuthProvider clientId={clientId}>
-            <GoogleAuthTrigger>{children}</GoogleAuthTrigger>
-        </GoogleOAuthProvider>
     );
 }

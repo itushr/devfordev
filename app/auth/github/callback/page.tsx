@@ -12,7 +12,7 @@ export default function GitHubCallbackPage() {
     const code = searchParams.get("code");
 
     if (!code) {
-      alert("No authorization code provided by GitHub.");
+      alert("Something Went Wrong!");
       router.push("/login");
       return;
     }
@@ -39,7 +39,6 @@ export default function GitHubCallbackPage() {
         }
       } catch (error) {
         console.error("GitHub Auth Error:", error);
-        alert("Something went wrong! Please try again.");
         router.push("/login");
       }
     }
@@ -48,7 +47,7 @@ export default function GitHubCallbackPage() {
   }, [searchParams, router]);
 
   return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
+    <div className="h-full w-full flex justify-center items-center">
       <p>Authenticating with GitHub, please wait...</p>
     </div>
   );

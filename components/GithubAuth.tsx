@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { ReactNode } from "react";
 
@@ -7,13 +7,13 @@ export default function GitHubAuth({ children }: { children: ReactNode }) {
     const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
     if (!clientId) {
-      console.error("Missing NEXT_PUBLIC_GITHUB_CLIENT_ID environment variable.");
+      console.error("Auth Error: Github client ID missing!");
       return;
     }
 
     const params = new URLSearchParams({
       client_id: clientId,
-      scope: "read:user", 
+      scope: "read:user",
     });
 
     window.location.href = `https://github.com/login/oauth/authorize?${params.toString()}`;

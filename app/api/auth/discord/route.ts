@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       client_secret: process.env.DISCORD_CLIENT_SECRET!,
       grant_type: "authorization_code",
       code,
-      redirect_uri: "http://localhost:3000/auth/discord/callback",
+      redirect_uri: process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI!,
     });
 
     const tokenRes = await fetch("https://discord.com/api/v10/oauth2/token", {
