@@ -4,10 +4,10 @@ import Link from "next/link"
 const page = () => {
     return (
         <>
-            <div className='w-full px-10 mt-10'>
+            <div className='w-full md:px-10 mt-10'>
                 <RegistrationForm />
             </div>
-            <div className='w-full px-10 mt-10 font-mono'>
+            <div className='w-full md:px-10 mt-10'>
                 Already a member? <Link href="/auth/login" className='underline'>login</Link>
             </div>
         </>

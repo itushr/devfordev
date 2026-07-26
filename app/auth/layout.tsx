@@ -7,16 +7,16 @@ import DiscordAuth from '@/components/DiscordAuth'
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <div className='flex flex-col w-7xl min-h-screen mx-auto justify-center'>
+        <div className='flex flex-col max-w-7xl w-full min-w-fit min-h-dvh mx-auto justify-center px-5 py-5 font-mono'>
             <div className='flex w-full border rounded-2xl'>
                 {/* left section */}
-                <div className='flex-1 flex items-center justify-center px-10 py-10 border-r'>
+                <div className='flex-1 hidden lg:flex items-center justify-center px-10 py-10 border-r'>
                     <Logo />
                 </div>
 
                 {/* right section */}
-                <div className='flex-1 px-10 py-24 flex flex-col items-center justify-center'>
-                    <div className='h-18 w-full flex items-center justify-center gap-10'>
+                <div className='flex-1 px-5 sm:px-10 py-10 md:py-24 flex flex-col items-center justify-center'>
+                    <div className='h-18 w-full flex items-center justify-between px-5 sm:justify-center sm:gap-10'>
                         <div className='w-16 h-16 rounded-full border p-3 cursor-pointer'>
                             <GoogleAuth>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
@@ -46,11 +46,12 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
                         </div>
                     </div>
 
-                    <div className='flex items-center w-full gap-2 mt-5 text-accent px-10 font-mono'>
+                    <div className='flex items-center w-full gap-2 mt-5 text-accent md:px-10'>
                         <div className='h-px bg-accent flex-1'></div>
                         or
                         <div className='h-px bg-accent flex-1'></div>
                     </div>
+
                     {children}
                 </div>
             </div>

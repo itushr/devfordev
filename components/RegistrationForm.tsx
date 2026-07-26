@@ -53,7 +53,7 @@ export default function RegistrationForm() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex w-full flex-col gap-5 mt-5 font-mono"
+            className="flex w-full flex-col gap-5 mt-5"
         >
             {/* Name */}
             <div>
