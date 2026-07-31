@@ -28,10 +28,11 @@ const Sidebar = ({ active, setActive }: { active: string, setActive: any }) => {
             <div className="px-5 py-5 flex flex-col hover:text-foreground/50">
                 {
                     options.map((item, index) => (
-                        <div key={index} onClick={() => setActive(item.text)} className="py-2 flex gap-2 font-mono tracking-wide hover:text-foreground cursor-pointer font-semibold">
-                            <div className="text-transparent" style={{ color: item.text === active ? "var(--foreground)" : "" }}>
-                                <ChevronRight />
-                            </div>
+                        <div key={index} onClick={() => setActive(item.text)} className="py-2 px-7 flex relative gap-2 font-mono tracking-wide hover:text-foreground cursor-pointer font-semibold">
+                            {item.text == active &&
+                                <div className="absolute left-0">
+                                    <ChevronRight />
+                                </div>}
                             {item.text}
                         </div>
                     ))
