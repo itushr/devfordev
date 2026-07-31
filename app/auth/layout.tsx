@@ -9,7 +9,7 @@ import GuestAuth from './GuestAuth'
 const AuthLayout = ({ children }: { children: ReactNode }) => {
     return (
         <div className='flex flex-col max-w-7xl w-full min-w-fit min-h-dvh mx-auto justify-center px-5 py-5 font-mono'>
-            <div className='flex w-full border rounded-2xl'>
+            <div className='flex w-full border rounded-2xl bg-background'>
                 {/* left section */}
                 <div className='flex-1 hidden lg:flex flex-col px-10 py-10 border-r'>
                     <BackButton />

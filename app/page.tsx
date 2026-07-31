@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <div className="w-full min-h-dvh flex">
       <Sidebar active={active} setActive={setActive} />
-      <main className="flex-1">
+      <main className="flex-1 background-pattern">
         { tabMap[active] }
       </main>
     </div>
