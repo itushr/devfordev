@@ -22,9 +22,9 @@ const Home = () => {
   const [active, setActive] = useState<keyof typeof tabMap>("Home")
 
   return (
-    <div className="w-full min-h-dvh flex">
+    <div className="w-full h-dvh flex">
       <Sidebar active={active} setActive={setActive} />
-      <main className="flex-1 background-pattern">
+      <main className="flex-1 background-pattern h-full overflow-auto scrollbar-thumb-border">
         { tabMap[active] }
       </main>
     </div>

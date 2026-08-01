@@ -24,7 +24,7 @@ const options = [
 const Sidebar = ({ active, setActive }: { active: string, setActive: any }) => {
     return (
         <div className="border-r w-70 bg-background">
-            <div className="px-5 py-5 text-xl font-mono font-semibold border-b">#devfordev</div>
+            <div className="px-5 h-15 flex items-center text-xl font-mono font-semibold border-b">#devfordev</div>
             <div className="px-5 py-5 flex flex-col hover:text-foreground/50">
                 {
                     options.map((item, index) => (
