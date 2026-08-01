@@ -1,4 +1,5 @@
 import { Verified } from "lucide-react"
+import Separator from "./Separator"
 
 const Pitch = () => {
     return (
@@ -26,7 +27,7 @@ const Pitch = () => {
                     <div className="flex"></div>
                 </div>
             </div>
-            <div className="h-8"></div>
+            <Separator />
         </>
     )
 }
