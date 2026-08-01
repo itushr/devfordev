@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <div className="w-full h-dvh flex">
       <Sidebar active={active} setActive={setActive} />
-      <main className="flex-1 background-pattern h-full overflow-auto scrollbar-thumb-border">
+      <main className="flex-1 h-full overflow-auto scrollbar-thumb-border">
         { tabMap[active] }
       </main>
     </div>
