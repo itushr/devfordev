@@ -1,4 +1,4 @@
-import RegistrationForm from "@/components/RegistrationForm"
+import RegistrationForm from "./RegistrationForm"
 import Link from "next/link"
 
 const page = () => {
