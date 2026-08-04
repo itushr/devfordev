@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, MoreHorizontal } from "lucide-react"
 
 const options = [
     {
@@ -23,7 +23,7 @@ const options = [
 
 const Sidebar = ({ active, setActive }: { active: string, setActive: any }) => {
     return (
-        <div className="border-r w-70 bg-background">
+        <div className="border-r w-70 bg-background relative">
             <div className="px-5 h-15 flex items-center text-xl font-mono font-semibold border-b">#devfordev</div>
             <div className="px-5 py-5 flex flex-col hover:text-foreground/50">
                 {
@@ -38,8 +38,15 @@ const Sidebar = ({ active, setActive }: { active: string, setActive: any }) => {
                     ))
                 }
             </div>
-            <div>
-                <div></div>
+            <div className="absolute bottom-0 border-t w-full px-5 py-3 flex gap-3 items-center">
+                <div className="size-15 bg-card rounded-full"></div>
+                <div className="flex-1 flex flex-col justify-center">
+                    <p>Tushar</p>
+                    <p className="text-foreground/70">@iamtushar</p>
+                </div>
+                <div className="hover:bg-card p-2 rounded-full cursor-pointer">
+                    <MoreHorizontal size={15} />
+                </div>
             </div>
         </div>
     )
