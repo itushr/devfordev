@@ -1,4 +1,5 @@
 import Separator from '@/components/Separator'
+import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
 
 const RightPanel = () => {
@@ -12,9 +13,9 @@ const RightPanel = () => {
                     <input placeholder="search" className="w-full outline-none" />
                 </div>
             </div>
-            
-            <div className="h-100 border-y p-2">
-                <div className="h-full w-full bg-background rounded-2xl"></div>
+
+            <div className="border-y px-10 py-5">
+                <Button className="w-full rounded-full">Ask for opinions</Button>
             </div>
             <Separator />
 
