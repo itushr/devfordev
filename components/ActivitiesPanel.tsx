@@ -12,7 +12,7 @@ const NotificationPanel = () => {
                 className="border-l w-70 bg-background sticky top-0 h-dvh font-mono"
                 style={{ display: isOpen ? "block" : "none" }}>
                 <div className="h-15 border-b flex items-center px-5">
-                    Notifications
+                    Activities
                 </div>
                 <div
                     className="size-10 bg-background rounded-full border absolute top-1/2 -translate-1/2 flex items-center justify-center cursor-pointer group hover:border-muted-foreground"

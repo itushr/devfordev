@@ -1,7 +1,7 @@
 import Sidebar from "@/components/sidebar/Sidebar"
 import LeftPanel from "./(leftpanel.tsx)/LeftPanel"
 import RightPanel from "./(rightpanel)/RightPanel"
-import NotificationPanel from "@/components/NotificationPanel"
+import NotificationPanel from "@/components/ActivitiesPanel"
 
 const Home = () => {
     return (
