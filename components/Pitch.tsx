@@ -4,7 +4,7 @@ import Separator from "./Separator"
 const Pitch = () => {
     return (
         <>
-            <div className="w-full border-y bg-background p-5 flex gap-2">
+            <div className="w-full bg-background p-5 flex gap-2">
                 <div>
                     <div className="size-14 bg-card rounded-full"></div>
                 </div>

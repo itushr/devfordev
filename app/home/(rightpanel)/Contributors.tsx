@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 
 const Contributors = () => {
     return (
-        <div className="border-y p-5">
+        <div className="p-5">
             <p className="text-lg">Todays Contributors</p>
             <div className="flex flex-col gap-5 mt-5">
                 <div className="flex justify-between items-center">

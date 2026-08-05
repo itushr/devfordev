@@ -2,7 +2,7 @@ import { Link } from 'lucide-react'
 
 const Trending = () => {
   return (
-    <div className="border-y p-5">
+    <div className="p-5">
       <p className="text-lg">Trending Today</p>
       <div className="flex flex-wrap gap-2 mt-3">
         <div className="flex items-center gap-x-2 group cursor-pointer">

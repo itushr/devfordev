@@ -1,8 +1,8 @@
 import Pitch from '@/components/Pitch'
 
-const LeftPanel = () => {
+const Feed = () => {
     return (
-        <div className="w-150 py-15 border">
+        <div>
             <Pitch />
             <Pitch />
             <Pitch />
@@ -29,4 +29,4 @@ const LeftPanel = () => {
     )
 }
 
-export default LeftPanel
+export default Feed
