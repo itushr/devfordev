@@ -1,6 +1,6 @@
 import Sidebar from "@/components/sidebar/Sidebar"
 import LeftPanel from "./LeftPanel"
-import RightPanel from "./RightPanel"
+import RightPanel from "./(rightpanel)/RightPanel"
 import NotificationPanel from "@/components/NotificationPanel"
 
 const Home = () => {
