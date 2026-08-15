@@ -1,5 +1,5 @@
 import Sidebar from "@/components/sidebar/Sidebar"
-import LeftPanel from "./(leftpanel.tsx)/LeftPanel"
+import LeftPanel from "./(leftpanel)/LeftPanel"
 import RightPanel from "./(rightpanel)/RightPanel"
 import NotificationPanel from "@/components/ActivitiesPanel"
 
