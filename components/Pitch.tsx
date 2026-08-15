@@ -1,4 +1,4 @@
-import { Verified } from "lucide-react"
+import { Bookmark, Brain, Code, CodeXml, Heart, MessageCircle, Share, Share2, Verified } from "lucide-react"
 import Separator from "./Separator"
 
 const Pitch = () => {
@@ -24,7 +24,30 @@ const Pitch = () => {
                     </div>
 
                     {/* social */}
-                    <div className="flex"></div>
+                    <div className="flex w-full mt-2 justify-between">
+                        <div className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
+                            <CodeXml size={16} />
+                            <span className="text-sm">15</span>
+                        </div>
+                        <div className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
+                            <Heart size={16} />
+                            <span className="text-sm">46</span>
+                        </div>
+                        <div className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
+                            <MessageCircle size={16} />
+                            <span className="text-sm">9</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
+                                <Bookmark size={16} />
+                                <span className="text-sm">51</span>
+                            </div>
+                            <div className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
+                                <Share2 size={15} />
+                                <span className="text-sm">51</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <Separator />
