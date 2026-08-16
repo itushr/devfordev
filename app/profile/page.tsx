@@ -6,7 +6,7 @@ import NotificationPanel from "@/components/ActivitiesPanel"
 const Profile = () => {
     return (
         <div className="w-full h-dvh flex">
-            <Sidebar active={"Home"} />
+            <Sidebar active={"Profile"} />
             <main className="flex-1 flex h-full overflow-auto scrollbar-thumb-border">
                 <div className='w-full max-w-260 mx-auto h-fit flex justify-between'>
                     <LeftPanel />

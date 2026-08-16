@@ -2,7 +2,7 @@ import React from 'react'
 
 const RightPanel = () => {
   return (
-    <div>RightPanel</div>
+    <div className='w-100 border-x sticky top-0 h-dvh'></div>
   )
 }
 
