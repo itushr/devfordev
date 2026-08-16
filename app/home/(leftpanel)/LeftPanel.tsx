@@ -1,3 +1,4 @@
+import PitchBox from "@/components/PitchBox"
 import Feed from "./Feed"
 import { Roboto } from "next/font/google"
 
@@ -25,6 +26,7 @@ const LeftPanel = () => {
                     Recent
                 </div>
             </div>
+            <PitchBox />
             <Feed />
         </div>
     )
