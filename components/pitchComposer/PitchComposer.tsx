@@ -20,7 +20,7 @@ export default function PitchComposer() {
     return (
         <DropArea setIsDragging={setIsDragging} onImageDrop={handleImageDrop}>
             <div className="w-full p-5 pb-2 flex gap-3">
-                <Avatar />
+                <Avatar image="/random-pfps/pfp5.jpeg" />
 
                 <div className="flex-1">
                     <div className="pt-3 font-mono">
