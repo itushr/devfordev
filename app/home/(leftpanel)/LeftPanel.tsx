@@ -1,6 +1,7 @@
-import PitchBox from "@/components/pitchbox/PitchBox"
 import Feed from "./Feed"
 import { Roboto } from "next/font/google"
+import PitchComposer from "@/components/pitchComposer/PitchComposer"
+import Separator from "@/components/Separator"
 
 const roboto = Roboto({
     weight: '500',
@@ -26,7 +27,8 @@ const LeftPanel = () => {
                     Recent
                 </div>
             </div>
-            <PitchBox />
+            <PitchComposer />
+            <Separator />
             <Feed />
         </div>
     )

@@ -1,12 +1,12 @@
 import { Bookmark, Brain, Code, CodeXml, Heart, MessageCircle, Share, Share2, Verified } from "lucide-react"
-import Separator from "./Separator"
+import Avatar from "./Avatar"
 
 const Pitch = () => {
     return (
         <>
             <div className="w-full bg-background p-5 flex gap-2">
                 <div>
-                    <div className="size-14 bg-card rounded-full"></div>
+                    <Avatar />
                 </div>
                 <div className="flex-1">
                     {/* header */}
@@ -50,7 +50,6 @@ const Pitch = () => {
                     </div>
                 </div>
             </div>
-            <Separator />
         </>
     )
 }

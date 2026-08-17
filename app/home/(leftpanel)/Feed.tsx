@@ -1,30 +1,15 @@
-import Pitch from '@/components/Pitch'
+import PitchCard from '@/components/PitchCard'
+import Separator from '@/components/Separator'
 
 const Feed = () => {
     return (
         <div>
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
-            <Pitch />
+            {[...Array(7).keys()].map((_, i) => (
+                <div key={i}>
+                    <PitchCard />
+                    <Separator />
+                </div>
+            ))}
         </div>
     )
 }
