@@ -4,7 +4,7 @@ import Avatar from "./Avatar"
 const Pitch = () => {
     return (
         <>
-            <div className="w-full bg-background p-5 flex gap-2">
+            <div className="w-full bg-background px-5 py-3 flex gap-3">
                 <div>
                     <Avatar />
                 </div>

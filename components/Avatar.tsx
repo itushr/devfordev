@@ -18,7 +18,7 @@ export default function Avatar({
 
     return (
         <div
-            className="size-14 bg-card rounded-full bg-cover bg-center"
+            className="size-12 bg-card rounded-full bg-cover bg-center"
             style={{
                 backgroundImage: avatar
                     ? `url("${avatar}")`
