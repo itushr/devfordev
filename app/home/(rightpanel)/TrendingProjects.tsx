@@ -47,17 +47,17 @@ function ProjectItem({
 
       <div className="flex items-center gap-7 pl-6 py-1">
         <Stat
-          icon={<MessageCircle size={12} />}
+          icon={<MessageCircle size={15} />}
           value={comments}
         />
 
         <Stat
-          icon={<Heart size={12} />}
+          icon={<Heart size={15} />}
           value={likes}
         />
 
         <Stat
-          icon={<Share2 size={12} />}
+          icon={<Share2 size={15} />}
           value={shares}
         />
       </div>
