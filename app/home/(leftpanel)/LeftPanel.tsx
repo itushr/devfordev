@@ -1,4 +1,4 @@
-import PitchBox from "@/components/PitchBox"
+import PitchBox from "@/components/pitchbox/PitchBox"
 import Feed from "./Feed"
 import { Roboto } from "next/font/google"
 
@@ -11,7 +11,7 @@ const roboto = Roboto({
 const LeftPanel = () => {
     return (
         <div className="w-150 border pt-15">
-            <div className={`h-15 w-149.5 bg-background/20 backdrop-blur-2xl border-b flex items-end px-5 gap-10 tracking-wide fixed top-0 text-md ${roboto.className}`}>
+            <div className={`z-10 h-15 w-149.5 bg-background/20 backdrop-blur-2xl border-b flex items-end px-5 gap-10 tracking-wide fixed top-0 text-md ${roboto.className}`}>
                 <div className="pb-3 relative">
                     For You
                     <div className="h-1 w-full bg-pink-500 absolute bottom-0 rounded-full"></div>
