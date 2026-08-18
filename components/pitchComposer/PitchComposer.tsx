@@ -7,14 +7,14 @@ import TextArea from "./TextArea";
 import ImagePreview from "./ImagePreview";
 import PitchAddons from "./PitchAddons";
 import DropArea from "./DropArea";
+import CompareImages from "./CompareImages";
 
 export default function PitchComposer() {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [imageUrls, setImageUrls] = useState<string[]>([])
     const [isDragging, setIsDragging] = useState(false);
 
-
     const handleImageDrop = (file: File) => {
-        setImageUrl(URL.createObjectURL(file));
+        setImageUrls([...imageUrls, URL.createObjectURL(file)]);
     };
 
     return (
@@ -32,9 +32,15 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-                        {imageUrl && (
-                            <ImagePreview src={imageUrl} />
-                        )}
+
+                        {imageUrls.length == 2 ? (
+                            <CompareImages imageUrls={imageUrls} />
+                        ) : (imageUrls.length > 0 && imageUrls.map((image, i) => (
+                            <ImagePreview key={i} src={image} />
+                        )))}
+
+
+
                     </div>
 
                     <PitchAddons />
