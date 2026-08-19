@@ -1,22 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Avatar from "../Avatar";
 import TextArea from "./TextArea";
-import ImagePreview from "./ImagePreview";
 import PitchAddons from "./PitchAddons";
 import DropArea from "./DropArea";
-import CompareImages from "./CompareImages";
 import Code from "./Code";
 import Pole from "./Pole";
+import Image from "./Image";
 
 export default function PitchComposer() {
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [hasImage, setHasImage] = useState<boolean>(false);
     const [hasPole, setHasPole] = useState<boolean>(false);
     const [hasCode, setHasCode] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
 
+    //to be fixed
     const handleImageDrop = (file: File) => {
         setImageUrls([...imageUrls, URL.createObjectURL(file)]);
     };
@@ -36,11 +36,7 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-                        {imageUrls.length == 2 ? (
-                            <CompareImages imageUrls={imageUrls} />
-                        ) : (imageUrls.length > 0 && imageUrls.map((image, i) => (
-                            <ImagePreview key={i} src={image} />
-                        )))}
+                        {hasImage && <Image />}
 
                         {hasCode && <Code />}
 
