@@ -16,13 +16,14 @@ export default function PitchComposer() {
     const [hasCode, setHasCode] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
 
-    //to be fixed
-    const handleImageDrop = (file: File) => {
-        setImageUrls([...imageUrls, URL.createObjectURL(file)]);
-    };
+    const data = useRef({
+        imagepreviews: [],
+        poleoptions: [],
+        codefiles: [],
+    })
 
     return (
-        <DropArea setIsDragging={setIsDragging} onImageDrop={handleImageDrop}>
+        <DropArea setIsDragging={setIsDragging} data={data} setHasImage={setHasImage}>
             <div className="w-full px-5 py-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" />
 
@@ -36,7 +37,7 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-                        {hasImage && <Image />}
+                        {hasImage && <Image imagepreviews={data.current.imagepreviews} />}
 
                         {hasCode && <Code />}
 
