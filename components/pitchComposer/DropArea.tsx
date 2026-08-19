@@ -4,14 +4,14 @@ import { DragEvent, ReactNode, useRef } from "react";
 
 type DropAreaProps = {
     children: ReactNode;
-    data: any;
+    imagepreviews: string[];
     setIsDragging: (isDragging: boolean) => void;
     setHasImage: (hasImage: boolean) => void;
 };
 
 export default function DropArea({
     children,
-    data,
+    imagepreviews,
     setIsDragging,
     setHasImage
 }: DropAreaProps) {
@@ -63,8 +63,8 @@ export default function DropArea({
         );
 
         if (image) {
-            data.current.imagepreviews = [...data.current.imagepreviews, URL.createObjectURL(image)]
-            setHasImage(true)
+            imagepreviews.push(URL.createObjectURL(image));
+            setHasImage(true);
         }
     };
 

@@ -23,7 +23,7 @@ export default function PitchComposer() {
     })
 
     return (
-        <DropArea setIsDragging={setIsDragging} data={data} setHasImage={setHasImage}>
+        <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setHasImage={setHasImage}>
             <div className="w-full px-5 py-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" />
 
