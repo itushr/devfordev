@@ -1,5 +1,5 @@
+import Separator from '@/components/Separator'
 import { Search } from 'lucide-react'
-import React from 'react'
 
 const RightPanel = () => {
   return (
@@ -13,6 +13,10 @@ const RightPanel = () => {
           </div>
           <input placeholder="search" className="w-full outline-none" />
         </div>
+      </div>
+
+      <div className='font-mono text-center py-10 text-xs'>
+        Graph = Connection of Nodes
       </div>
 
     </div>

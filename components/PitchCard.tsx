@@ -1,7 +1,7 @@
 import { Activity, Bookmark, EllipsisVertical, Flame, Heart, MessageCircle, Share2 } from "lucide-react"
 import Avatar from "./Avatar"
 
-const Pitch = () => {
+const PitchCard = () => {
     return (
         <>
             <div className="w-full bg-background px-5 py-3 flex gap-3">
@@ -61,4 +61,4 @@ const Pitch = () => {
     )
 }
 
-export default Pitch
+export default PitchCard
