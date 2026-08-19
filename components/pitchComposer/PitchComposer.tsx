@@ -8,9 +8,11 @@ import ImagePreview from "./ImagePreview";
 import PitchAddons from "./PitchAddons";
 import DropArea from "./DropArea";
 import CompareImages from "./CompareImages";
+import CodeBlock from "./CodeBlock";
 
 export default function PitchComposer() {
-    const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [codeBlocks, setCodeBlocks] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleImageDrop = (file: File) => {
@@ -32,18 +34,18 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-
                         {imageUrls.length == 2 ? (
                             <CompareImages imageUrls={imageUrls} />
                         ) : (imageUrls.length > 0 && imageUrls.map((image, i) => (
-                            <ImagePreview key={i} src={image } />
+                            <ImagePreview key={i} src={image} />
                         )))}
 
-
-
+                        {codeBlocks.length > 0 && codeBlocks.map((code, i) => (
+                            <CodeBlock key={i} code={code} />
+                        ))}
                     </div>
 
-                    <PitchAddons />
+                    <PitchAddons setCodeBlocks={setCodeBlocks} />
                 </div>
             </div>
         </DropArea>
