@@ -9,10 +9,12 @@ import PitchAddons from "./PitchAddons";
 import DropArea from "./DropArea";
 import CompareImages from "./CompareImages";
 import CodeBlock from "./CodeBlock";
+import Pole from "./Pole";
 
 export default function PitchComposer() {
     const [imageUrls, setImageUrls] = useState<string[]>([]);
     const [codeBlocks, setCodeBlocks] = useState<string[]>([]);
+    const [hasPole, setHasPole] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleImageDrop = (file: File) => {
@@ -43,9 +45,11 @@ export default function PitchComposer() {
                         {codeBlocks.length > 0 && codeBlocks.map((code, i) => (
                             <CodeBlock key={i} code={code} />
                         ))}
+
+                        {hasPole && <Pole />}
                     </div>
 
-                    <PitchAddons setCodeBlocks={setCodeBlocks} />
+                    <PitchAddons setCodeBlocks={setCodeBlocks} setHasPole={setHasPole} />
                 </div>
             </div>
         </DropArea>

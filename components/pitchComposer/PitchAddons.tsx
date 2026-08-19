@@ -1,7 +1,8 @@
 import { CodeXml, Command, CornerDownLeft, HatGlasses, Image, Link, List, SlidersHorizontal } from "lucide-react";
 
-const PitchAddons = ({ setCodeBlocks }: {
-    setCodeBlocks: any
+const PitchAddons = ({ setCodeBlocks, setHasPole }: {
+    setCodeBlocks: any,
+    setHasPole: any
 }) => {
     return (
         <div className="border-t mt-5 py-2 flex justify-between items-center text-foreground/80">
@@ -14,17 +15,18 @@ const PitchAddons = ({ setCodeBlocks }: {
                 <CodeXml
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setCodeBlocks((codeBlocks: any) => [...codeBlocks, ""])}
+                    onClick={() => setCodeBlocks((codeBlocks: string[]) => [...codeBlocks, ""])}
                 />
 
                 <Link
                     size={15}
                     className="hover:text-pink-500 cursor-pointer"
-                />
+                    />
 
                 <List
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
+                    onClick={() => setHasPole((hasPole: boolean) => !hasPole)}
                 />
 
                 <HatGlasses
