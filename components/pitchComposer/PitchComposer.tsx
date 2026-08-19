@@ -36,7 +36,7 @@ export default function PitchComposer() {
                         {imageUrls.length == 2 ? (
                             <CompareImages imageUrls={imageUrls} />
                         ) : (imageUrls.length > 0 && imageUrls.map((image, i) => (
-                            <ImagePreview key={i} src={image} />
+                            <ImagePreview key={i} src={image } />
                         )))}
 
 
