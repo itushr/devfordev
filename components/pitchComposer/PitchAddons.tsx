@@ -1,32 +1,82 @@
-import { CodeXml, Command, CornerDownLeft, HatGlasses, Image, Link, List, SlidersHorizontal } from "lucide-react";
+import {
+    CodeXml,
+    Command,
+    CornerDownLeft,
+    HatGlasses,
+    Image,
+    Link,
+    List,
+    SlidersHorizontal,
+} from "lucide-react";
+import { Dispatch, useRef } from "react";
 
-const PitchAddons = ({ setHasCode, setHasPole }: {
-    setHasCode: any,
-    setHasPole: any
+const PitchAddons = ({
+    data,
+    setHasCode,
+    setHasPole,
+    setImageCount,
+}: {
+    data: any;
+    setHasCode: Dispatch<React.SetStateAction<boolean>>;
+    setHasPole: Dispatch<React.SetStateAction<boolean>>;
+    setImageCount: Dispatch<React.SetStateAction<number>>;
 }) => {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImageUpload = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const files = Array.from(e.target.files || []);
+
+        const imageFiles = files.filter(file =>
+            file.type.startsWith("image/")
+        );
+
+        imageFiles.forEach(file => {
+            const imagePreviewUrl = URL.createObjectURL(file);
+            data.current.imagepreviews.push(imagePreviewUrl);
+        });
+
+        if (imageFiles.length > 0) {
+            setImageCount(prev => prev + imageFiles.length);
+        }
+
+        e.target.value = "";
+    };
+
     return (
         <div className="border-t mt-5 py-2 flex justify-between items-center text-foreground/80">
             <div className="flex gap-3">
                 <Image
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                />
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    hidden
+                    onChange={handleImageUpload}
                 />
 
                 <CodeXml
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setHasCode((hasCode: boolean) => !hasCode)}
+                    onClick={() => setHasCode(prev => !prev)}
                 />
 
                 <Link
                     size={15}
                     className="hover:text-pink-500 cursor-pointer"
-                    />
+                />
 
                 <List
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setHasPole((hasPole: boolean) => !hasPole)}
+                    onClick={() => setHasPole(prev => !prev)}
                 />
 
                 <HatGlasses
@@ -46,6 +96,6 @@ const PitchAddons = ({ setHasCode, setHasPole }: {
             </div>
         </div>
     );
-}
+};
 
 export default PitchAddons;

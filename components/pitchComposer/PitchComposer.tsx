@@ -11,7 +11,7 @@ import Pole from "./Pole";
 import Image from "./Image";
 
 export default function PitchComposer() {
-    const [hasImage, setHasImage] = useState<boolean>(false);
+    const [imageCount, setImageCount] = useState<number>(0);
     const [hasPole, setHasPole] = useState<boolean>(false);
     const [hasCode, setHasCode] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
@@ -23,7 +23,7 @@ export default function PitchComposer() {
     })
 
     return (
-        <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setHasImage={setHasImage}>
+        <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setImageCount={setImageCount}>
             <div className="w-full px-5 py-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" />
 
@@ -37,14 +37,14 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-                        {hasImage && <Image imagepreviews={data.current.imagepreviews} />}
+                        {imageCount > 0 && <Image imagepreviews={data.current.imagepreviews} />}
 
                         {hasCode && <Code />}
 
                         {hasPole && <Pole />}
                     </div>
 
-                    <PitchAddons setHasCode={setHasCode} setHasPole={setHasPole} />
+                    <PitchAddons data={data} setHasCode={setHasCode} setHasPole={setHasPole} setImageCount={setImageCount} />
                 </div>
             </div>
         </DropArea>

@@ -1,19 +1,19 @@
 "use client";
 
-import { DragEvent, ReactNode, useRef } from "react";
+import { Dispatch, DragEvent, ReactNode, useRef } from "react";
 
 type DropAreaProps = {
     children: ReactNode;
     imagepreviews: string[];
-    setIsDragging: (isDragging: boolean) => void;
-    setHasImage: (hasImage: boolean) => void;
+    setIsDragging: Dispatch<React.SetStateAction<boolean>>;
+    setImageCount: Dispatch<React.SetStateAction<number>>;
 };
 
 export default function DropArea({
     children,
     imagepreviews,
     setIsDragging,
-    setHasImage
+    setImageCount,
 }: DropAreaProps) {
     const dragCounter = useRef(0);
 
@@ -58,13 +58,16 @@ export default function DropArea({
         dragCounter.current = 0;
         setIsDragging(false);
 
-        const image = [...e.dataTransfer.files].find(
+        const imageFiles = [...e.dataTransfer.files].filter(
             file => file.type.startsWith("image/")
         );
 
-        if (image) {
-            imagepreviews.push(URL.createObjectURL(image));
-            setHasImage(true);
+        imageFiles.forEach(file => {
+            imagepreviews.push(URL.createObjectURL(file));
+        });
+
+        if (imageFiles.length > 0) {
+            setImageCount(prev => prev + imageFiles.length);
         }
     };
 
