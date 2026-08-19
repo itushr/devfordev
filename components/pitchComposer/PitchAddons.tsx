@@ -1,7 +1,7 @@
 import { CodeXml, Command, CornerDownLeft, HatGlasses, Image, Link, List, SlidersHorizontal } from "lucide-react";
 
-const PitchAddons = ({ setCodeBlocks, setHasPole }: {
-    setCodeBlocks: any,
+const PitchAddons = ({ setHasCode, setHasPole }: {
+    setHasCode: any,
     setHasPole: any
 }) => {
     return (
@@ -15,7 +15,7 @@ const PitchAddons = ({ setCodeBlocks, setHasPole }: {
                 <CodeXml
                     size={18}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setCodeBlocks((codeBlocks: string[]) => [...codeBlocks, ""])}
+                    onClick={() => setHasCode((hasCode: boolean) => !hasCode)}
                 />
 
                 <Link
