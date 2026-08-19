@@ -28,7 +28,7 @@ export default function PitchComposer() {
                 <Avatar image="/random-pfps/pfp5.jpeg" />
 
                 <div className="flex-1">
-                    <div className="pt-3 font-mono">
+                    <div className="font-mono flex flex-col gap-3 pt-3">
                         <TextArea />
 
                         {isDragging && (

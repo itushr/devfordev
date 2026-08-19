@@ -45,10 +45,10 @@ const PitchAddons = ({
     };
 
     return (
-        <div className="border-t mt-5 py-2 flex justify-between items-center text-foreground/80">
+        <div className="border-t mt-3 pt-2 flex justify-between items-center text-foreground/80">
             <div className="flex gap-3">
                 <Image
-                    size={18}
+                    size={14}
                     className="hover:text-pink-500 cursor-pointer"
                     onClick={() => fileInputRef.current?.click()}
                 />
@@ -63,29 +63,29 @@ const PitchAddons = ({
                 />
 
                 <CodeXml
-                    size={18}
+                    size={16}
                     className="hover:text-pink-500 cursor-pointer"
                     onClick={() => setHasCode(prev => !prev)}
                 />
 
                 <Link
-                    size={15}
+                    size={13}
                     className="hover:text-pink-500 cursor-pointer"
                 />
 
                 <List
-                    size={18}
+                    size={14}
                     className="hover:text-pink-500 cursor-pointer"
                     onClick={() => setHasPole(prev => !prev)}
                 />
 
                 <HatGlasses
-                    size={18}
+                    size={15}
                     className="hover:text-pink-500 cursor-pointer"
                 />
 
                 <SlidersHorizontal
-                    size={18}
+                    size={14}
                     className="hover:text-pink-500 cursor-pointer"
                 />
             </div>

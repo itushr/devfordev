@@ -4,7 +4,7 @@ type ImagePreviewProps = {
 
 export default function ImagePreview({ src }: ImagePreviewProps) {
     return (
-        <div className="w-full bg-card mt-3 rounded-md overflow-hidden">
+        <div className="w-full bg-card rounded-md overflow-hidden">
             <img
                 src={src}
                 alt="Attached image"

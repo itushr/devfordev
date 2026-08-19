@@ -20,7 +20,7 @@ export default function Pole({
     }
 
     return (
-        <div className="w-full max-w-md space-y-2">
+        <div className="w-full space-y-2">
             {options.map((option, i) => (
                 <div key={i} className="flex items-center gap-2 border rounded-md">
                     <div className="text-foreground/50 pl-4 pr-2">
