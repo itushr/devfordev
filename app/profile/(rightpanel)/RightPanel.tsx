@@ -1,9 +1,10 @@
 import Separator from '@/components/Separator'
 import { Search } from 'lucide-react'
+import Network from './Network'
 
 const RightPanel = () => {
   return (
-    <div className='w-100 border-x sticky top-0 h-dvh'>
+    <div className='w-100 border-x sticky top-0 h-dvh flex flex-col'>
 
       {/* searchbar */}
       <div className="h-15 border-b flex items-center px-5">
@@ -15,8 +16,8 @@ const RightPanel = () => {
         </div>
       </div>
 
-      <div className='font-mono text-center py-10 text-xs'>
-        Graph = Connection of Nodes
+      <div className='font-mono text-center text-xs flex-1'>
+        <Network />
       </div>
 
     </div>
