@@ -16,7 +16,7 @@ const RightPanel = () => {
         </div>
       </div>
 
-      <div className='font-mono text-center text-xs flex-1'>
+      <div className='flex-1'>
         <Network />
       </div>
 
