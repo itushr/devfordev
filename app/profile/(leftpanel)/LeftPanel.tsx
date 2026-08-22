@@ -29,12 +29,12 @@ const LeftPanel = () => {
                             className="size-32 border rounded-full bg-cover flex items-end justify-center"
                             style={{ backgroundImage: "url('/random-pfps/pfp5.jpeg')" }}
                         >
-                            <div className="bg-foreground text-background w-fit flex items-center px-3 py-0.5 gap-0.5 rounded-2xl translate-y-2">
+                            <div className="bg-foreground text-background w-fit flex items-center px-3 py-0.5 gap-0.5 rounded-2xl translate-y-2 border">
                                 <span className="text-xs font-bold">5</span>
                                 <Star size={10} className="fill-background" />
                             </div>
                         </div>
-                        <div className="h-10 mt-5">
+                        <div className="mt-5">
                             <p className="text-center text-lg">Tushar</p>
                             <p className="-mt-1 text-foreground/70 text-center">@iamtushar</p>
                         </div>

@@ -280,7 +280,7 @@ export default function SocialNet({
     return (
         <div
             ref={containerRef}
-            className="relative flex-1 w-full h-full min-h-125 overflow-hidden select-none cursor-grab active:cursor-grabbing"
+            className="relative flex-1 w-full h-full min-h-125 overflow-hidden select-none cursor-grab active:cursor-grabbing opacity-80"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
