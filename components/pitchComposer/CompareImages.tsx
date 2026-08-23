@@ -17,7 +17,7 @@ export default function CompareImages(
         return (
             <div>
                 <ImagePreview src={imagepreviews[0]} />
-                <div className="flex justify-center mt-2">
+                <div className="flex justify-center my-2">
                     <div className="w-fit px-2 py-1 rounded-md border text-sm cursor-pointer relative" onClick={() => setIsComparing(true)}>
                         <div className="w-10 h-5 -left-10 -top-2 border-l border-b absolute rounded-bl-md"></div>
                         compare
@@ -31,7 +31,7 @@ export default function CompareImages(
 
     return (
         <div className="relative">
-            <ImageSlider className="h-96 w-full overflow-hidden rounded-xl">
+            <ImageSlider className="h-96 w-full overflow-hidden rounded-xl bg-card">
                 <ImageLayer
                     src={imagepreviews[0]}
                     alt="Before Image"
