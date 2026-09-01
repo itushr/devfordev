@@ -45,7 +45,7 @@ function ProjectItem({
         </div>
       </div>
 
-      <div className="flex items-center gap-7 pl-6 py-1">
+      {/* <div className="flex items-center gap-7 pl-6 py-1">
         <Stat
           icon={<MessageCircle size={15} />}
           value={comments}
@@ -60,7 +60,7 @@ function ProjectItem({
           icon={<Share2 size={15} />}
           value={shares}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

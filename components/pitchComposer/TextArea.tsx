@@ -129,7 +129,7 @@ const TextArea = () => {
                 value={text}
                 spellCheck={false}
                 onChange={handleInput}
-                placeholder="pitch your idea"
+                placeholder="Pitch your idea..."
                 className="
                     relative
                     w-full

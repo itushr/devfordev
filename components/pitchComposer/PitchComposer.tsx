@@ -9,6 +9,12 @@ import DropArea from "./DropArea";
 import Code from "./Code";
 import Pole from "./Pole";
 import Image from "./Image";
+import { Sora } from "next/font/google"
+
+const sora = Sora({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700', '800']
+})
 
 export default function PitchComposer() {
     const [imageCount, setImageCount] = useState<number>(0);
@@ -25,10 +31,10 @@ export default function PitchComposer() {
     return (
         <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setImageCount={setImageCount}>
             <div className="w-full px-5 py-3 flex gap-3">
-                <Avatar image="/random-pfps/pfp5.jpeg" />
+                <Avatar image="/random-pfps/pfp5.jpeg" size={9} />
 
                 <div className="flex-1">
-                    <div className="font-mono flex flex-col gap-3 pt-3">
+                    <div className={`${sora.className} flex flex-col gap-3 pt-1`}>
                         <TextArea />
 
                         {isDragging && (

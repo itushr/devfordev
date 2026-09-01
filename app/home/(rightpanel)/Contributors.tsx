@@ -37,7 +37,7 @@ const Contributors = () => {
             className="flex justify-between items-center"
           >
             <div className="flex items-center gap-x-3 cursor-pointer">
-              <Avatar />
+              <Avatar size={9} />
 
               <div>
                 <p>

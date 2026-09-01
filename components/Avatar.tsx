@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 
 export default function Avatar({
     image,
+    size,
 }: {
     image?: string;
+    size?: number;
 }) {
     const [avatar, setAvatar] = useState<string | null>(image ?? null);
 
@@ -18,7 +20,7 @@ export default function Avatar({
 
     return (
         <div
-            className="size-12 bg-card rounded-full bg-cover bg-center"
+            className={`${size ? `size-${size}` : 'size-12'} bg-card rounded-full bg-cover bg-center`}
             style={{
                 backgroundImage: avatar
                     ? `url("${avatar}")`

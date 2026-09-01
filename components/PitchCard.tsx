@@ -1,63 +1,61 @@
 import { Activity, Bookmark, EllipsisVertical, Flame, Heart, MessageCircle, Share2 } from "lucide-react"
 import Avatar from "./Avatar"
+import { Sora } from "next/font/google"
+
+const sora = Sora({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700', '800']
+})
 
 const PitchCard = () => {
     return (
         <>
             <div className="w-full bg-background px-5 py-3 flex gap-3">
-                <div>
-                    <Avatar />
+                <div className="flex flex-col justify-end relative">
+                    <Avatar size={9} />
                 </div>
                 <div className="flex-1">
                     {/* header */}
-                    <div className="mt-1 flex justify-between items-center">
-                        <div className="flex-1">
-                            <span>Tushar</span>
-                            <span className="ml-2 text-foreground/50">@iamtushar</span>
+                    <div className="flex justify-between">
+                        <div className={`flex gap-2 font-mono`}>
+                            <span className="text-foreground/90">by Tushar</span>
+                            <span className="text-foreground/50">@iamtushar</span>
                         </div>
                         <EllipsisVertical size={16} className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground" />
                     </div>
-
                     {/* main */}
-                    <div className="font-mono text-foreground/80">
+                    <div className={`${sora.className} text-foreground/90`}>
                         <span>
-                            hii there! i am using whatsapp
+                            Hii there! I am using whatsapp
                         </span>
-                        <div className="w-full aspect-video bg-card mt-3 rounded-md"></div>
+                        <div className="w-full aspect-video bg-card mt-2 rounded-md"></div>
                     </div>
 
-                    {/* social */}
-                    <div className="flex w-full mt-2 justify-between font-mono text-foreground/50 px-1">
-                        <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                            <MessageCircle size={15} />
-                            <span className="text-xs">9</span>
-                        </div>
-                        <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                            <Heart size={16} />
-                            <span className="text-xs">46</span>
-                        </div>
-                        <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                            <Flame size={17} />
-                            <span className="text-xs">15</span>
-                        </div>
-                        <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                            <Activity size={16} />
-                            <span className="text-xs">9</span>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                                <Bookmark size={16} />
-                                {/* <span className="text-xs">51</span> */}
-                            </div>
-                            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer">
-                                <Share2 size={15} />
-                                {/* <span className="text-xs">51</span> */}
-                            </div>
-                        </div>
-                    </div>
+                    <Social />
                 </div>
             </div>
         </>
+    )
+}
+
+const Social = () => {
+    const interactions = [
+        { icon: <Flame size={17} />, count: 9 },
+        { icon: <Heart size={16} />, count: 46 },
+        { icon: <MessageCircle size={15} />, count: 15 },
+        { icon: <Activity size={16} />, count: 9 },
+        { icon: <Bookmark size={16} />, count: 12 },
+    ];
+
+    return (
+        <div className="flex w-full mt-2 justify-between font-mono text-foreground/50 rounded-md border">
+            {interactions.map((interaction, index) => (
+                <div key={index} className={`flex items-center gap-2 hover:text-pink-500 cursor-pointer ${index !== interactions.length-1 && "border-r"} py-2 flex-1 justify-center`}>
+                    {interaction.icon}
+                    <span className="text-xs">{interaction.count}</span>
+                </div>
+            ))}
+        </div>
     )
 }
 

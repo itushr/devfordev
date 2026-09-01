@@ -1,14 +1,13 @@
-import { Elsie } from "next/font/google"
+import { Sora } from "next/font/google"
 
-const elsie = Elsie({
-    weight: '400',
+const sora = Sora({
     subsets: ['latin'],
-    display: 'swap'
+    weight: ['400', '500', '600', '700', '800']
 })
 
 const Logo = () => {
     return (
-        <div className={`px-5 h-15 flex items-center text-3xl font-mono font-semibold border-b ${elsie.className}`}>devfordev</div>
+        <div className={`px-5 h-15 flex items-center text-2xl border-b ${sora.className}`}>devfordev</div>
     )
 }
 
