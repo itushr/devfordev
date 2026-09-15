@@ -1,4 +1,4 @@
-import { Activity, Bookmark, EllipsisVertical, Flame, Heart, MessageCircle, Share2 } from "lucide-react"
+import { Activity, Bookmark, EllipsisVertical, Flame, Heart, MessageCircle, Send, Share2 } from "lucide-react"
 import Avatar from "./Avatar"
 import { Sora } from "next/font/google"
 
@@ -44,7 +44,9 @@ const Social = () => {
         { icon: <Heart size={16} />, count: 46 },
         { icon: <MessageCircle size={15} />, count: 15 },
         { icon: <Activity size={16} />, count: 9 },
+        { icon: <Send size={15} />, count: 12 },
         { icon: <Bookmark size={16} />, count: 12 },
+
     ];
 
     return (
