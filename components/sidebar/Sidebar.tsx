@@ -12,11 +12,11 @@ const Sidebar = ({ active }: { active: string }) => {
     return (
         <>
             <div
-                className="border-r w-70 bg-background relative"
-                style={{ display: isOpen ? "block" : "none" }}
+                className="border-r w-70 bg-background relative flex-col"
+                style={{ display: isOpen ? "flex" : "none" }}
             >
                 <Logo />
-                <Menu active={active} />
+                    <Menu active={active} />
                 <Profile />
                 <div
                     className="size-10 bg-background rounded-full border absolute top-1/2 left-full -translate-1/2 flex items-center justify-center cursor-pointer group hover:border-muted-foreground"

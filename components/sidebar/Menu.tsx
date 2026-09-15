@@ -4,7 +4,7 @@ import { menuOptions } from "./menuOptions"
 
 const Menu = ({ active }: { active: string }) => {
     return (
-        <div className="px-5 py-5 flex flex-col hover:text-foreground/50">
+        <div className="px-5 py-5 flex flex-col hover:text-foreground/50 flex-1">
             {
                 menuOptions.map((item, index) => (
                     <Link key={index} href={item.link} >
