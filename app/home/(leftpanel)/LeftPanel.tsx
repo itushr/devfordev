@@ -1,7 +1,4 @@
 import Feed from "./Feed"
-import { Roboto } from "next/font/google"
-import PitchComposer from "@/components/pitchComposer/PitchComposer"
-import Separator from "@/components/Separator"
 import { ChevronDown, ChevronRight } from "lucide-react"
 
 const LeftPanel = () => {
@@ -16,8 +13,6 @@ const LeftPanel = () => {
                     <ChevronDown size={15} />
                 </div>
             </div>
-            {/* <PitchComposer />
-            <Separator /> */}
             <Feed />
         </div>
     )
