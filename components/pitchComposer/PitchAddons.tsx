@@ -1,3 +1,4 @@
+import { uploadFile } from "@/lib/uploadFile";
 import {
     CodeXml,
     Command,
@@ -32,9 +33,20 @@ const PitchAddons = ({
             file.type.startsWith("image/")
         );
 
-        imageFiles.forEach(file => {
+        imageFiles.forEach(async (file) => {
             const imagePreviewUrl = URL.createObjectURL(file);
             data.current.imagepreviews.push(imagePreviewUrl);
+
+            //upload to cloud
+            try {
+                const result = await uploadFile(file, (progress) => {
+                    console.log(progress);
+                });
+
+                console.log("R2 key:", result.key);
+            } catch (error) {
+                console.error(error);
+            }
         });
 
         if (imageFiles.length > 0) {
