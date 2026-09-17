@@ -13,7 +13,7 @@ const Terminal = ({ children, onClose }: { children: ReactNode; onClose?: () => 
             </div>
 
             {/* Terminal Body */}
-            <div className="min-h-80 p-5 font-mono">
+            <div className="p-5 font-mono">
                 {children}
             </div>
         </div>

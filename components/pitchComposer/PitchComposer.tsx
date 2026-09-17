@@ -30,11 +30,11 @@ export default function PitchComposer() {
 
     return (
         <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setImageCount={setImageCount}>
-            <div className="w-full px-5 py-3 flex gap-3">
+            <div className="w-full px-5 pt-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" size={9} />
 
                 <div className="flex-1">
-                    <div className={`${sora.className} flex flex-col gap-3 pt-1`}>
+                    <div className={`${sora.className} flex flex-col gap-3 pt-1 min-h-50`}>
                         <TextArea />
 
                         {isDragging && (
