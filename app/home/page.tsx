@@ -9,7 +9,7 @@ import PitchComposer from "@/components/pitchComposer/PitchComposer";
 import Terminal from "@/components/Ternimal";
 
 const Home = () => {
-    const [showComposer, setShowComposer] = useState<boolean>(true);
+    const [showComposer, setShowComposer] = useState<boolean>(false);
 
     return (
         <div className="w-full h-dvh flex">

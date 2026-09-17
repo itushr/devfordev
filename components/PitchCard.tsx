@@ -17,10 +17,11 @@ const PitchCard = () => {
                 <div className="flex-1">
                     {/* header */}
                     <div className="flex justify-between">
-                        <div className={`flex gap-2 font-mono`}>
+                        {/* <div className="flex gap-2 font-mono">
                             <span className="text-foreground/90">by Tushar</span>
                             <span className="text-foreground/50">@iamtushar</span>
-                        </div>
+                        </div> */}
+                        <div className="font-mono text-foreground/50 mb-1">//Tushar @iamtushar ~ 25 pts</div>
                         <EllipsisVertical size={16} className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground" />
                     </div>
                     {/* main */}
