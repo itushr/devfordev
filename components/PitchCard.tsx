@@ -21,7 +21,7 @@ const PitchCard = () => {
                             <span className="text-foreground/90">by Tushar</span>
                             <span className="text-foreground/50">@iamtushar</span>
                         </div> */}
-                        <div className="font-mono text-foreground/50 mb-1">//Tushar @iamtushar ~ 25 pts</div>
+                        <div className="font-mono text-foreground/50 mb-1">@iamtushar Tushar ~ 25 pts</div>
                         <EllipsisVertical size={16} className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground" />
                     </div>
                     {/* main */}
