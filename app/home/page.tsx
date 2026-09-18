@@ -1,15 +1,10 @@
-"use client";
-
 import Sidebar from "@/components/sidebar/Sidebar"
 import LeftPanel from "./(leftpanel)/LeftPanel"
 import RightPanel from "./(rightpanel)/RightPanel"
 import NotificationPanel from "@/components/ActivitiesPanel"
-import { useState } from "react"
-import PitchComposer from "@/components/pitchComposer/PitchComposer";
-import Terminal from "@/components/Ternimal";
+import PitchComposerModel from "@/components/pitchComposer/PitchComposerModel";
 
 const Home = () => {
-    const [showComposer, setShowComposer] = useState<boolean>(false);
 
     return (
         <div className="w-full h-dvh flex">
@@ -21,11 +16,7 @@ const Home = () => {
                 </div>
                 <NotificationPanel />
             </main>
-            {showComposer && <div className="absolute top-0 left-0 min-h-dvh w-full z-20 bg-background/10 flex items-center justify-center backdrop-blur ">
-                <Terminal onClose={() => setShowComposer((prev) => !prev)}>
-                    <PitchComposer />
-                </Terminal>
-            </div>}
+            <PitchComposerModel />
         </div>
     )
 }
