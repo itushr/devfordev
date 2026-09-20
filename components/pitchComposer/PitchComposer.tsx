@@ -17,19 +17,17 @@ const sora = Sora({
 })
 
 export default function PitchComposer() {
-    const [imageCount, setImageCount] = useState<number>(0);
     const [hasPole, setHasPole] = useState<boolean>(false);
     const [hasCode, setHasCode] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
 
     const data = useRef({
-        imagepreviews: [],
         poleoptions: [],
         codefiles: [],
     })
 
     return (
-        <DropArea setIsDragging={setIsDragging} imagepreviews={data.current.imagepreviews} setImageCount={setImageCount}>
+        <DropArea setIsDragging={setIsDragging}>
             <div className="w-full px-5 pt-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" size={9} />
 

@@ -14,7 +14,7 @@ export default function Image() {
             {images.length == 2 ? (
                 <CompareImages />
             ) : (images.map((image, i) => (
-                <ImagePreview key={i} src={image.preview} />
+                <ImagePreview key={i} image={image} />
             )))}
         </div>
     )

@@ -1,20 +1,19 @@
 "use client";
 
+import { useUploadStore } from "@/store/upload";
 import { Dispatch, DragEvent, ReactNode, useRef } from "react";
 
 type DropAreaProps = {
     children: ReactNode;
-    imagepreviews: string[];
     setIsDragging: Dispatch<React.SetStateAction<boolean>>;
-    setImageCount: Dispatch<React.SetStateAction<number>>;
 };
 
 export default function DropArea({
     children,
-    imagepreviews,
     setIsDragging,
-    setImageCount,
 }: DropAreaProps) {
+    const { addImage } = useUploadStore();
+
     const dragCounter = useRef(0);
 
     const isFileDrag = (e: DragEvent) =>
@@ -63,12 +62,12 @@ export default function DropArea({
         );
 
         imageFiles.forEach(file => {
-            imagepreviews.push(URL.createObjectURL(file));
+            addImage({
+                id: crypto.randomUUID(),
+                preview: URL.createObjectURL(file),
+                progress: 10
+            });
         });
-
-        if (imageFiles.length > 0) {
-            setImageCount(prev => prev + imageFiles.length);
-        }
     };
 
     return (

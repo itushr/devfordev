@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ImageItem = {
+export type ImageItem = {
     id: string;
     preview: string;
     progress: number;
