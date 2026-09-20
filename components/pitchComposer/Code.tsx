@@ -1,74 +1,53 @@
 import { useState } from "react"
 import { CodeBlockEditable } from "../ui/code-block-editable"
 import { Plus, X } from "lucide-react"
+import { useComposerCodeStore } from "@/store/composerCode"
 
 type File = {
+  id: string,
   name: string
   content: string
 }
 
 export default function Code() {
-  const [files, setFiles] = useState<File[]>([
-    {
-      name: "1.jsx",
-      content: `function MyComponent(props) {
-  return (
-    <div>
-      <h1>Hello, {props.name}!</h1>
-      <p>This is an example React component.</p>
-    </div>
-  );
-}`,
-    },
-    {
-      name: "2.jsx",
-      content: `function MyComponent2(props) {
-  return (
-    <div>
-      <h1>Hello, {props.name}!</h1>
-      <p>This is an example React component.</p>
-    </div>
-  );
-}`,
-    },
-  ])
+  const { files, addFile, removeFile, activeFile, setActiveFile, editFile } = useComposerCodeStore();
 
-  const [activeCode, setActiveCode] = useState(0)
-
-  const closeFile = (index: number) => {
-    if (files.length <= 1) return
-
-    setFiles((prev) => prev.filter((_, i) => i !== index))
-
-    setActiveCode((current) => {
-      if (index < current) return current - 1
-      if (index === current) return Math.min(current, files.length - 2)
-      return current
-    })
+  const closeFile = (id: string) => {
+    removeFile(id);
+    if(files.length < 1) {
+      setActiveFile(null);
+    } else {
+      setActiveFile(files[0].id);
+    }
   }
 
-  const addFile = () => {
+  const addNewFile = () => {
     const newFile: File = {
+      id: crypto.randomUUID(),
       name: `${files.length + 1}.jsx`,
       content: "",
-    }
-
-    setFiles((prev) => [...prev, newFile])
-    setActiveCode(files.length)
+    };
+    addFile(newFile);
+    setActiveFile(newFile.id);
   }
+
+  if (files.length < 1) {
+    return <></>;
+  }
+
+  const activeCode = files.find((file) => file.id === activeFile) ?? files[0];
 
   return (
     <div className="overflow-hidden rounded-md border">
       <div className="flex w-full overflow-x-auto scrollbar-hide bg-card text-sm text-foreground/50">
-        {files.map((file, index) => (
+        {files.map((file, _) => (
           <div
-            key={file.name}
-            onClick={() => setActiveCode(index)}
-            className={`flex shrink-0 cursor-pointer items-center gap-2 px-3 py-3 ${
-              activeCode === index
-                ? "text-foreground"
-                : "hover:text-pink-500"
-            }`}
+            key={file.id}
+            onClick={() => setActiveFile(file.id)}
+            className={`flex shrink-0 cursor-pointer items-center gap-2 px-3 py-3 ${activeFile === file.id
+              ? "text-foreground"
+              : "hover:text-pink-500"
+              }`}
           >
             <div>{file.name}</div>
 
@@ -76,7 +55,7 @@ export default function Code() {
               size={15}
               onClick={(e) => {
                 e.stopPropagation()
-                closeFile(index)
+                closeFile(file.id)
               }}
               className="hover:text-foreground"
             />
@@ -85,7 +64,7 @@ export default function Code() {
 
         <button
           type="button"
-          onClick={addFile}
+          onClick={addNewFile}
           className="shrink-0 px-3 text-foreground/50 hover:text-foreground"
         >
           <Plus size={16} />
@@ -93,8 +72,11 @@ export default function Code() {
       </div>
 
       <CodeBlockEditable
-        code={files[activeCode].content}
-        language="jsx"
+        code={activeCode.content}
+        language="js"
+        onChange={(e) => {
+          editFile(activeFile as string, e)
+        }}
       />
     </div>
   )

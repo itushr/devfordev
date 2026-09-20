@@ -18,7 +18,6 @@ const sora = Sora({
 
 export default function PitchComposer() {
     const [hasPole, setHasPole] = useState<boolean>(false);
-    const [hasCode, setHasCode] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState(false);
 
     const data = useRef({
@@ -43,12 +42,12 @@ export default function PitchComposer() {
 
                         <Image />
 
-                        {hasCode && <Code />}
+                        <Code />
 
                         {hasPole && <Pole />}
                     </div>
 
-                    <PitchAddons data={data} setHasCode={setHasCode} setHasPole={setHasPole} />
+                    <PitchAddons data={data} setHasPole={setHasPole} />
                 </div>
             </div>
         </DropArea>

@@ -1,4 +1,5 @@
 import { uploadFile } from "@/lib/uploadFile";
+import { useComposerCodeStore } from "@/store/composerCode";
 import { useUploadStore } from "@/store/upload";
 import {
     CodeXml,
@@ -14,14 +15,13 @@ import { Dispatch, useRef } from "react";
 
 const PitchAddons = ({
     data,
-    setHasCode,
     setHasPole
 }: {
     data: any;
-    setHasCode: Dispatch<React.SetStateAction<boolean>>;
     setHasPole: Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const { addImage } = useUploadStore();
+    const { addFile } = useComposerCodeStore();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +78,11 @@ const PitchAddons = ({
                 <CodeXml
                     size={17}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setHasCode(prev => !prev)}
+                    onClick={() => addFile({
+                        id: crypto.randomUUID(),
+                        name: "x.jsx",
+                        content: ""
+                    })}
                 />
 
                 <Link
