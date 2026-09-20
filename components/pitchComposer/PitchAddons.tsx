@@ -1,5 +1,6 @@
 import { uploadFile } from "@/lib/uploadFile";
 import { useComposerCodeStore } from "@/store/composerCode";
+import { useComposerPoll } from "@/store/composerPole";
 import { useUploadStore } from "@/store/upload";
 import {
     CodeXml,
@@ -7,21 +8,17 @@ import {
     CornerDownLeft,
     HatGlasses,
     Image,
+    LayoutList,
     Link,
     List,
     SlidersHorizontal,
 } from "lucide-react";
-import { Dispatch, useRef } from "react";
+import { useRef } from "react";
 
-const PitchAddons = ({
-    data,
-    setHasPole
-}: {
-    data: any;
-    setHasPole: Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const PitchAddons = () => {
     const { addImage } = useUploadStore();
     const { addFile } = useComposerCodeStore();
+    const { enablePoll } = useComposerPoll();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,15 +82,15 @@ const PitchAddons = ({
                     })}
                 />
 
-                <Link
+                {/* <Link
                     size={14}
                     className="hover:text-pink-500 cursor-pointer"
-                />
+                /> */}
 
-                <List
+                <LayoutList
                     size={15}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => setHasPole(prev => !prev)}
+                    onClick={() => enablePoll()}
                 />
 
                 <HatGlasses
