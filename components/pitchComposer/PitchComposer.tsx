@@ -50,7 +50,7 @@ export default function PitchComposer() {
                         {hasPole && <Pole />}
                     </div>
 
-                    <PitchAddons data={data} setHasCode={setHasCode} setHasPole={setHasPole} setImageCount={setImageCount} />
+                    <PitchAddons data={data} setHasCode={setHasCode} setHasPole={setHasPole} />
                 </div>
             </div>
         </DropArea>
