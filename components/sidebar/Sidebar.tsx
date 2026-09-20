@@ -5,6 +5,7 @@ import Logo from "./Logo"
 import Menu from "./Menu"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import ComposeCTA from "./ComposeCTA"
 
 const Sidebar = ({ active }: { active: string }) => {
     const [isOpen, setIsOpen] = useState(true)
@@ -12,11 +13,14 @@ const Sidebar = ({ active }: { active: string }) => {
     return (
         <>
             <div
-                className="border-r w-70 bg-background relative flex-col"
+                className="border-r w-70 relative flex-col"
                 style={{ display: isOpen ? "flex" : "none" }}
             >
                 <Logo />
-                    <Menu active={active} />
+                <Menu active={active} />
+                <div className="px-8 py-5">
+                    <ComposeCTA />
+                </div>
                 <Profile />
                 <div
                     className="size-10 bg-background rounded-full border absolute top-1/2 left-full -translate-1/2 flex items-center justify-center cursor-pointer group hover:border-muted-foreground"
