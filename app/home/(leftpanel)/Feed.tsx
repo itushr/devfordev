@@ -1,4 +1,4 @@
-import PitchCard from '@/components/PitchCard'
+import PitchCard from '@/components/pitchCard/PitchCard'
 import Separator from '@/components/Separator'
 
 const Feed = () => {
