@@ -1,13 +1,20 @@
+import { useUploadStore } from "@/store/upload";
 import CompareImages from "./CompareImages";
 import ImagePreview from "./ImagePreview";
 
-export default function Image({ imagepreviews }: { imagepreviews: string[] }) {
+export default function Image() {
+    const { images } = useUploadStore();
+
+    if(images.length < 1) {
+        return <></>;
+    }
+
     return (
         <div className="space-y-3">
-            {imagepreviews.length == 2 ? (
-                <CompareImages imagepreviews={imagepreviews} />
-            ) : (imagepreviews.length > 0 && imagepreviews.map((image, i) => (
-                <ImagePreview key={i} src={image} />
+            {images.length == 2 ? (
+                <CompareImages />
+            ) : (images.map((image, i) => (
+                <ImagePreview key={i} src={image.preview} />
             )))}
         </div>
     )

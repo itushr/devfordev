@@ -43,7 +43,7 @@ export default function PitchComposer() {
                             </div>
                         )}
 
-                        {imageCount > 0 && <Image imagepreviews={data.current.imagepreviews} />}
+                        <Image />
 
                         {hasCode && <Code />}
 

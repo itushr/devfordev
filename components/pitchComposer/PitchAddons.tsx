@@ -1,4 +1,5 @@
 import { uploadFile } from "@/lib/uploadFile";
+import { useUploadStore } from "@/store/upload";
 import {
     CodeXml,
     Command,
@@ -14,14 +15,14 @@ import { Dispatch, useRef } from "react";
 const PitchAddons = ({
     data,
     setHasCode,
-    setHasPole,
-    setImageCount,
+    setHasPole
 }: {
     data: any;
     setHasCode: Dispatch<React.SetStateAction<boolean>>;
     setHasPole: Dispatch<React.SetStateAction<boolean>>;
-    setImageCount: Dispatch<React.SetStateAction<number>>;
 }) => {
+    const { addImage } = useUploadStore();
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageUpload = (
@@ -35,23 +36,23 @@ const PitchAddons = ({
 
         imageFiles.forEach(async (file) => {
             const imagePreviewUrl = URL.createObjectURL(file);
-            data.current.imagepreviews.push(imagePreviewUrl);
+            addImage({
+                id: crypto.randomUUID(),
+                preview: imagePreviewUrl,
+                progress: 10
+            });
 
             //upload to cloud
-            try {
-                const result = await uploadFile(file, (progress) => {
-                    console.log(progress);
-                });
+            // try {
+            //     const result = await uploadFile(file, (progress) => {
+            //         console.log(progress);
+            //     });
 
-                console.log("R2 key:", result.key);
-            } catch (error) {
-                console.error(error);
-            }
+            //     console.log("R2 key:", result.key);
+            // } catch (error) {
+            //     console.error(error);
+            // }
         });
-
-        if (imageFiles.length > 0) {
-            setImageCount(prev => prev + imageFiles.length);
-        }
 
         e.target.value = "";
     };
