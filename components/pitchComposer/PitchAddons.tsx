@@ -1,4 +1,4 @@
-import { uploadFile } from "@/lib/uploadFile";
+import { uploadFile } from "@/lib/client/uploadFile";
 import { useComposerCodeStore } from "@/store/composerCode";
 import { useComposerPoll } from "@/store/composerPole";
 import { useUploadStore } from "@/store/upload";
