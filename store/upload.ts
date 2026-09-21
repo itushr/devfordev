@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type ImageItem = {
     id: string;
-    preview: string;
+    file: File;
     progress: number;
     url: string;
 };

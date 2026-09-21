@@ -5,7 +5,7 @@ import { useUploadStore } from "@/store/upload";
 type ImagePreviewProps = {
     image: {
         id: string;
-        preview: string;
+        preview: File;
         progress: number;
     };
 };
@@ -16,7 +16,7 @@ export default function ImagePreview({ image }: ImagePreviewProps) {
     return (
         <div className="w-full bg-card rounded-md overflow-hidden relative">
             <img
-                src={image.preview}
+                src={URL.createObjectURL(image.preview)}
                 alt="attached image"
                 className="w-full rounded-md"
             />
