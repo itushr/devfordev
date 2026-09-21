@@ -13,7 +13,6 @@ import {
     List,
     SlidersHorizontal,
 } from "lucide-react";
-import { image } from "motion/react-client";
 import { useRef } from "react";
 
 const PitchAddons = () => {
@@ -33,19 +32,20 @@ const PitchAddons = () => {
         );
 
         imageFiles.forEach(async (file) => {
-            const newImage = {
-                id: crypto.randomUUID(),
-                file: file,
+            const imagePreviewUrl = URL.createObjectURL(file);
+            const newId = crypto.randomUUID();
+            addImage({
+                id: newId,
+                preview: imagePreviewUrl,
                 progress: 10,
                 url: ''
-            }
-            addImage(newImage);
+            });
 
             //upload to server
             try {
-                const result = await uploadFile(newImage, (progress) => {
+                const result = await uploadFile(file, (progress) => {
                     console.log(progress);
-                    updateProgress(newImage.id, progress);
+                    updateProgress(newId, progress);
                 });
 
                 console.log("R2 key:", result.key);

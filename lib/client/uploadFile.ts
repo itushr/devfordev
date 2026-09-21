@@ -1,5 +1,3 @@
-import type { ImageItem } from "@/store/upload";
-
 type UploadProgressCallback = (progress: number) => void;
 
 type UploadResult = {
@@ -7,7 +5,7 @@ type UploadResult = {
 };
 
 export function uploadFile(
-    image: ImageItem,
+    file: File,
     onProgress: UploadProgressCallback
 ): Promise<UploadResult> {
     return new Promise(async (resolve, reject) => {
@@ -18,9 +16,9 @@ export function uploadFile(
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    fileName: image.file.name,
-                    contentType: image.file.type,
-                    size: image.file.size,
+                    fileName: file.name,
+                    contentType: file.type,
+                    size: file.size,
                 }),
             });
 
@@ -63,9 +61,9 @@ export function uploadFile(
             };
 
             xhr.open("PUT", data.uploadUrl);
-            xhr.setRequestHeader("Content-Type", image.file.type);
+            xhr.setRequestHeader("Content-Type", file.type);
 
-            xhr.send(image.file);
+            xhr.send(file);
         } catch (error) {
             reject(error);
         }
