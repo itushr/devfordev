@@ -15,23 +15,10 @@ type ComposerCodeState = {
     removeFile: (id: string) => void;
 };
 
-const initialFile: FileItem = {
-    id: crypto.randomUUID(),
-    name: "1.jsx",
-    content: `function MyComponent(props) {
-    return (
-        <div>
-            <h1>Hello, {props.name}!</h1>
-            <p>This is an example React component.</p>
-        </div>
-    );
-}`,
-};
-
 export const useComposerCodeStore = create<ComposerCodeState>((set) => ({
-    files: [initialFile],
+    files: [],
 
-    activeFile: initialFile.id,
+    activeFile: null,
 
     setActiveFile: (id) =>
         set({ activeFile: id }),
