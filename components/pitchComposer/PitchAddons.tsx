@@ -33,19 +33,19 @@ const PitchAddons = () => {
 
         imageFiles.forEach(async (file) => {
             const imagePreviewUrl = URL.createObjectURL(file);
-            const newId = crypto.randomUUID();
-            addImage({
-                id: newId,
+            const newImage = {
+                id: crypto.randomUUID(),
                 preview: imagePreviewUrl,
                 progress: 10,
                 url: ''
-            });
+            }
+            addImage(newImage);
 
             //upload to server
             try {
                 const result = await uploadFile(file, (progress) => {
                     console.log(progress);
-                    updateProgress(newId, progress);
+                    updateProgress(newImage.id, progress);
                 });
 
                 console.log("R2 key:", result.key);
