@@ -16,7 +16,7 @@ import {
 import { useRef } from "react";
 
 const PitchAddons = () => {
-    const { addImage } = useUploadStore();
+    const { addImage, updateProgress } = useUploadStore();
     const { addFile } = useComposerCodeStore();
     const { enablePoll } = useComposerPoll();
 
@@ -33,23 +33,25 @@ const PitchAddons = () => {
 
         imageFiles.forEach(async (file) => {
             const imagePreviewUrl = URL.createObjectURL(file);
+            const newId = crypto.randomUUID();
             addImage({
-                id: crypto.randomUUID(),
+                id: newId,
                 preview: imagePreviewUrl,
                 progress: 10,
                 url: ''
             });
 
-            //upload to cloud
-            // try {
-            //     const result = await uploadFile(file, (progress) => {
-            //         console.log(progress);
-            //     });
+            //upload to server
+            try {
+                const result = await uploadFile(file, (progress) => {
+                    console.log(progress);
+                    updateProgress(newId, progress);
+                });
 
-            //     console.log("R2 key:", result.key);
-            // } catch (error) {
-            //     console.error(error);
-            // }
+                console.log("R2 key:", result.key);
+            } catch (error) {
+                console.error(error);
+            }
         });
 
         e.target.value = "";
