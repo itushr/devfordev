@@ -17,7 +17,7 @@ import { useRef } from "react";
 
 const PitchAddons = () => {
     const { addImage, updateProgress } = useUploadStore();
-    const { addFile } = useComposerCodeStore();
+    const { addFile, setActiveFile } = useComposerCodeStore();
     const { enablePoll } = useComposerPoll();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -78,11 +78,15 @@ const PitchAddons = () => {
                 <CodeXml
                     size={17}
                     className="hover:text-pink-500 cursor-pointer"
-                    onClick={() => addFile({
-                        id: crypto.randomUUID(),
-                        name: "x.jsx",
-                        content: ""
-                    })}
+                    onClick={() => {
+                        const newFile = {
+                            id: crypto.randomUUID(),
+                            name: "1.jsx",
+                            content: ""
+                        }
+                        addFile(newFile);
+                        setActiveFile(newFile.id);
+                    }}
                 />
 
                 {/* <Link
@@ -96,7 +100,7 @@ const PitchAddons = () => {
                     onClick={() => enablePoll()}
                 />
 
-                <HatGlasses
+                {/* <HatGlasses
                     size={16}
                     className="hover:text-pink-500 cursor-pointer"
                 />
@@ -104,7 +108,7 @@ const PitchAddons = () => {
                 <SlidersHorizontal
                     size={15}
                     className="hover:text-pink-500 cursor-pointer"
-                />
+                /> */}
             </div>
 
             <div className="flex gap-1 border rounded-sm px-2 py-1 hover:text-pink-500 cursor-pointer opacity-50">
