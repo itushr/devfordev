@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadFile } from "@/lib/client/uploadFile";
 import { useUploadStore } from "@/store/upload";
 import { Dispatch, DragEvent, ReactNode, useRef } from "react";
 
@@ -12,7 +13,7 @@ export default function DropArea({
     children,
     setIsDragging,
 }: DropAreaProps) {
-    const { addImage } = useUploadStore();
+    const { addImage, updateProgress } = useUploadStore();
 
     const dragCounter = useRef(0);
 
@@ -61,13 +62,27 @@ export default function DropArea({
             file => file.type.startsWith("image/")
         );
 
-        imageFiles.forEach(file => {
-            addImage({
+        imageFiles.forEach(async (file) => {
+            const imagePreviewUrl = URL.createObjectURL(file);
+            const newImage = {
                 id: crypto.randomUUID(),
-                preview: URL.createObjectURL(file),
+                preview: imagePreviewUrl,
                 progress: 10,
                 url: ''
-            });
+            }
+            addImage(newImage);
+
+            //upload to server
+            try {
+                const result = await uploadFile(file, (progress) => {
+                    console.log(progress);
+                    updateProgress(newImage.id, progress);
+                });
+
+                console.log("R2 key:", result.key);
+            } catch (error) {
+                console.error(error);
+            }
         });
     };
 
