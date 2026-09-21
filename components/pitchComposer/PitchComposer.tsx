@@ -25,7 +25,7 @@ export default function PitchComposer() {
                 <Avatar image="/random-pfps/pfp5.jpeg" size={9} />
 
                 <div className="flex-1">
-                    <div className={`${sora.className} flex flex-col gap-3 pt-1 min-h-50`}>
+                    <div className={`${sora.className} flex flex-col gap-3 pt-1 min-h-50 text-base`}>
                         <TextArea />
 
                         {isDragging && (
