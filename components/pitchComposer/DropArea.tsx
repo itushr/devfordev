@@ -65,7 +65,8 @@ export default function DropArea({
             addImage({
                 id: crypto.randomUUID(),
                 preview: URL.createObjectURL(file),
-                progress: 10
+                progress: 10,
+                url: ''
             });
         });
     };

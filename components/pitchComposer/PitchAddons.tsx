@@ -36,7 +36,8 @@ const PitchAddons = () => {
             addImage({
                 id: crypto.randomUUID(),
                 preview: imagePreviewUrl,
-                progress: 10
+                progress: 10,
+                url: ''
             });
 
             //upload to cloud
