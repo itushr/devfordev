@@ -1,4 +1,4 @@
-import { Activity, Flame, Heart, MessageCircle, Send } from "lucide-react"
+import { Activity, Bookmark, Flame, Heart, MessageCircle, Send } from "lucide-react"
 
 export default function Social() {
     const interactions = [
@@ -6,18 +6,21 @@ export default function Social() {
         { icon: <Heart size={16} />, count: 46 },
         { icon: <MessageCircle size={15} />, count: 15 },
         { icon: <Activity size={16} />, count: 9 },
+        { icon: <Bookmark size={16} />, count: 10 },
         { icon: <Send size={15} />, count: 12 },
     ];
 
     return (
-        <div className="flex w-full mt-2 justify-between font-mono text-foreground/50 rounded-md border">
-            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer border-r px-5 py-2 flex-1">@iamtushar</div>
-            {interactions.map((interaction, index) => (
-                <div key={index} className={`flex items-center gap-2 hover:text-pink-500 cursor-pointer ${index !== interactions.length - 1 && "border-r"} py-2 flex-1 justify-center`}>
-                    {interaction.icon}
-                    <span className="text-xs">{interaction.count}</span>
-                </div>
-            ))}
+        <div className="flex w-full mt-2 justify-between font-mono text-foreground/50 border rounded-md px-2">
+            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1">iamtushar</div>
+            <div className="flex gap-5 pr-1">
+                {interactions.map((interaction, index) => (
+                    <div key={index} className={`flex items-center gap-2 hover:text-pink-500 cursor-pointer py-2 flex-1 justify-center`}>
+                        {interaction.icon}
+                        <span className="text-xs">{interaction.count}</span>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
