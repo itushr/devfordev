@@ -314,7 +314,7 @@ export const edges: NetworkEdge[] = [
     { source: "henry", target: "harper", relation: "follower" },
 ];
 
-const AskForOpinions = () => {
+const NetworkGraph = () => {
     const [selected, setSelected] = useState<string>("you");
 
     return (
@@ -329,4 +329,4 @@ const AskForOpinions = () => {
     )
 }
 
-export default AskForOpinions
+export default NetworkGraph
