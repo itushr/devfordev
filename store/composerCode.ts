@@ -13,6 +13,7 @@ type ComposerCodeState = {
     addFile: (file: FileItem) => void;
     editFile: (id: string, content: string) => void;
     removeFile: (id: string) => void;
+    clearFiles: () => void;
 };
 
 export const useComposerCodeStore = create<ComposerCodeState>((set) => ({
@@ -41,4 +42,10 @@ export const useComposerCodeStore = create<ComposerCodeState>((set) => ({
         set((state) => ({
             files: state.files.filter((file) => file.id !== id),
         })),
+
+    clearFiles: () =>
+        set({
+            files: [],
+            activeFile: null,
+        }),
 }));

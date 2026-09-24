@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import Avatar from "../Avatar";
 import TextArea from "./TextArea";
@@ -9,12 +9,13 @@ import DropArea from "./DropArea";
 import Code from "./Code";
 import Pole from "./Pole";
 import Image from "./Image";
-import { Sora } from "next/font/google"
+import Submit from "./Submit";
+import { Sora } from "next/font/google";
 
 const sora = Sora({
     subsets: ['latin'],
     weight: ['400', '500', '600', '700', '800']
-})
+});
 
 export default function PitchComposer() {
     const [isDragging, setIsDragging] = useState(false);
@@ -39,7 +40,10 @@ export default function PitchComposer() {
                         <Pole />
                     </div>
 
-                    <PitchAddons />
+                    <div className="border-t mt-3 pt-2 flex justify-between items-center text-foreground/80">
+                        <PitchAddons />
+                        <Submit />
+                    </div>
                 </div>
             </div>
         </DropArea>

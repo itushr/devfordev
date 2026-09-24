@@ -9,14 +9,20 @@ export type ImageItem = {
 
 type UploadState = {
     images: ImageItem[];
+    compare: boolean;
+    setCompare: (compare: boolean) => void;
     addImage: (image: ImageItem) => void;
     updateProgress: (id: string, progress: number) => void;
     updateUrl: (id: string, url: string) => void;
     removeImage: (id: string) => void;
+    clearImages: () => void;
 };
 
 export const useUploadStore = create<UploadState>((set) => ({
     images: [],
+    compare: false,
+
+    setCompare: (compare) => set({ compare }),
 
     addImage: (image) =>
         set((state) => ({
@@ -42,7 +48,17 @@ export const useUploadStore = create<UploadState>((set) => ({
         })),
 
     removeImage: (id) =>
-        set((state) => ({
-            images: state.images.filter((image) => image.id !== id),
-        })),
+        set((state) => {
+            const nextImages = state.images.filter((image) => image.id !== id);
+            return {
+                images: nextImages,
+                compare: nextImages.length === 2 ? state.compare : false,
+            };
+        }),
+
+    clearImages: () =>
+        set({
+            images: [],
+            compare: false,
+        }),
 }));

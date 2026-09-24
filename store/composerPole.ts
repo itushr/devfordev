@@ -9,6 +9,7 @@ type ComposerPollState = {
     updateOption: (index: number, value: string) => void;
     addOption: () => void;
     removeOption: (index: number) => void;
+    resetPoll: () => void;
 };
 
 export const useComposerPoll = create<ComposerPollState>((set) => ({
@@ -18,7 +19,9 @@ export const useComposerPoll = create<ComposerPollState>((set) => ({
 
     enablePoll: () => set({ pollEnabled: true }),
 
-    disablePoll: () => set({ pollEnabled: false }),
+    disablePoll: () => set({ pollEnabled: false, options: ["", ""] }),
+
+    resetPoll: () => set({ pollEnabled: false, options: ["", ""] }),
 
     setOptions: (options) => set({ options }),
 

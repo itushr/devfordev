@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ImagePreview from "./ImagePreview";
 import {
     ImageSlider,
@@ -9,17 +8,16 @@ import { useUploadStore } from "@/store/upload";
 import { Split, SquareSplitHorizontal } from "lucide-react";
 
 export default function CompareImages() {
-    const [isComparing, setIsComparing] = useState<boolean>(false);
-    const { images } = useUploadStore();
+    const { images, compare, setCompare } = useUploadStore();
 
-    if (!isComparing) {
+    if (!compare) {
         return (
             <div>
                 <ImagePreview image={images[0]} />
                 <div className="flex justify-center my-2">
                     <div
                         className="w-fit aspect-square rounded-full px-2 border text-sm cursor-pointer relative flex items-center hover:bg-card"
-                        onClick={() => setIsComparing(true)}
+                        onClick={() => setCompare(true)}
                     >
                         <div className="w-10 h-5 -left-10 -top-2 border-l border-b absolute rounded-bl-md"></div>
                         <SquareSplitHorizontal size={15} />
@@ -48,7 +46,7 @@ export default function CompareImages() {
 
             <div
                 className="absolute top-2 right-2 w-fit aspect-square rounded-full bg-background px-2 py-1 border text-sm cursor-pointer flex items-center hover:bg-card"
-                onClick={() => setIsComparing(false)}
+                onClick={() => setCompare(false)}
             >
                 <Split size={15} />
             </div>

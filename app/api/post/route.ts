@@ -62,10 +62,6 @@ export async function POST(req: NextRequest) {
 
         const data = result.data.data;
 
-        /*
-         * Move uploaded images from the private bucket
-         * to the public bucket before creating the post.
-         */
         for (const block of data) {
             if (block.type !== "images") continue;
 

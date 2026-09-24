@@ -13,7 +13,7 @@ export default function DropArea({
     children,
     setIsDragging,
 }: DropAreaProps) {
-    const { addImage, updateProgress } = useUploadStore();
+    const { addImage, updateProgress, updateUrl } = useUploadStore();
 
     const dragCounter = useRef(0);
 
@@ -21,7 +21,6 @@ export default function DropArea({
         e.dataTransfer.types.includes("Files");
 
     const handleDragEnter = (e: DragEvent) => {
-        <div className="w-10 h-5 -left-10 -top-2 border-l border-b absolute rounded-bl-md"></div>
         if (!isFileDrag(e)) return;
 
         dragCounter.current++;
@@ -80,6 +79,7 @@ export default function DropArea({
                 });
 
                 console.log("R2 key:", result.key);
+                updateUrl(newImage.id, result.key);
             } catch (error) {
                 console.error(error);
             }

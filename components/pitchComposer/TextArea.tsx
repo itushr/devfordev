@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { useComposerText } from "@/store/composerText";
 
 const DOMAIN =
     String.raw`(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}`;
@@ -89,7 +90,17 @@ const highlightUrls = (text: string): string => {
 
 
 const TextArea = () => {
-    const [text, setText] = useState("");
+    const { text, setText } = useComposerText();
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto";
+            if (text) {
+                textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+            }
+        }
+    }, [text]);
 
     const handleInput = (
         e: React.ChangeEvent<HTMLTextAreaElement>
@@ -125,6 +136,7 @@ const TextArea = () => {
             />
 
             <textarea
+                ref={textareaRef}
                 rows={1}
                 value={text}
                 spellCheck={false}
