@@ -1,24 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
 import Post from "@/models/Post";
 import { createPostSchema } from "@/validations/post";
 import { connectDB } from "@/lib/db";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
-        const user = req as Request & {
-            user_id?: string;
-            user_name?: string;
-            user_username?: string;
-            user_avatar_url?: string;
-            user_role?: string;
+        const user = {
+            user_id: req.headers.get("user_id"),
+            user_name: req.headers.get("user_name"),
+            user_username:  req.headers.get("user_username"),
+            user_avatar_url: req.headers.get("user_avatar_url") ?? "",
+            user_role: req.headers.get("user_role"),
         };
 
         if (
             !user.user_id ||
             !user.user_name ||
-            !user.user_username
+            !user.user_username ||
+            user.user_role !== "user"
         ) {
             return NextResponse.json(
                 { error: "Unauthorized" },
