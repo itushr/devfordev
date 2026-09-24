@@ -3,6 +3,7 @@ import { create } from "zustand";
 export type AuthUser = {
     id: string;
     name: string;
+    username: string;
     avatar?: string;
 };
 
@@ -35,7 +36,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             const data = await res.json();
 
             set({
-                authUser: data,
+                authUser: data.payload,
             });
         } catch (error) {
             console.error("Authentication failed:", error);
