@@ -4,13 +4,14 @@ import { ZodError } from "zod";
 import Post from "@/models/Post";
 import { createPostSchema } from "@/validations/post";
 import { connectDB } from "@/lib/db";
+import { publishMedia } from "@/lib/publishmedia";
 
 export async function POST(req: NextRequest) {
     try {
         const user = {
             user_id: req.headers.get("user_id"),
             user_name: req.headers.get("user_name"),
-            user_username:  req.headers.get("user_username"),
+            user_username: req.headers.get("user_username"),
             user_avatar_url: req.headers.get("user_avatar_url") ?? "",
             user_role: req.headers.get("user_role"),
         };
@@ -59,6 +60,20 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        const data = result.data.data;
+
+        /*
+         * Move uploaded images from the private bucket
+         * to the public bucket before creating the post.
+         */
+        for (const block of data) {
+            if (block.type !== "images") continue;
+
+            for (let i = 0; i < block.urls.length; i++) {
+                block.urls[i] = (await publishMedia(block.urls[i])).url;
+            }
+        }
+
         await connectDB();
 
         const post = await Post.create({
@@ -69,7 +84,7 @@ export async function POST(req: NextRequest) {
 
             points: 10,
 
-            data: result.data.data,
+            data,
 
             stats: {
                 flames: 0,
