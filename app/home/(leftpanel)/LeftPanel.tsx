@@ -9,7 +9,7 @@ const LeftPanel = () => {
                     iamtushar@devfordev ~ %
                 </div>
                 <div className="flex items-center gap-1 text-foreground/70">
-                    <span>for you</span>
+                    <span>recent</span>
                     <ChevronDown size={15} />
                 </div>
             </div>

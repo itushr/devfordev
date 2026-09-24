@@ -131,9 +131,14 @@ export default function Submit() {
             clearFiles();
             resetPoll();
 
-            // Close modal if open
             if (showPitchComposer) {
                 await togglePitchComposer();
+            }
+
+            if (typeof window !== "undefined") {
+                window.dispatchEvent(
+                    new CustomEvent("pitch-created", { detail: json.post })
+                );
             }
 
             router.refresh();

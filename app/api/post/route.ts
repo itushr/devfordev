@@ -118,3 +118,53 @@ export async function POST(req: NextRequest) {
         );
     }
 }
+
+export async function GET(req: NextRequest) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const limitParam = searchParams.get("limit");
+        const cursor = searchParams.get("cursor");
+        const pageParam = searchParams.get("page");
+
+        const limit = limitParam
+            ? Math.min(Math.max(parseInt(limitParam, 10) || 25, 1), 100)
+            : 25;
+
+        await connectDB();
+
+        const query: Record<string, unknown> = {};
+
+        if (cursor) {
+            query._id = { $lt: cursor };
+        }
+
+        let mongoQuery = Post.find(query)
+            .sort({ createdAt: -1, _id: -1 })
+            .limit(limit);
+
+        if (pageParam && !cursor) {
+            const page = Math.max(parseInt(pageParam, 10) || 1, 1);
+            mongoQuery = mongoQuery.skip((page - 1) * limit);
+        }
+
+        const posts = await mongoQuery.lean();
+
+        const nextCursor =
+            posts.length === limit
+                ? (posts[posts.length - 1] as { _id?: unknown })._id?.toString() ?? null
+                : null;
+
+        return NextResponse.json({
+            posts,
+            nextCursor,
+            hasMore: posts.length === limit,
+        });
+    } catch (error) {
+        console.error("Error: @route GET /api/post", error);
+
+        return NextResponse.json(
+            { error: "Failed to fetch posts" },
+            { status: 500 }
+        );
+    }
+}
