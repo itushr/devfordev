@@ -69,6 +69,7 @@ export async function POST(req: Request) {
             payload: {
                 id: user._id.toString(),
                 name: user.name,
+                username: user.username,
                 avatar: user.avatar,
                 points: user.points,
                 rating: user.rating,

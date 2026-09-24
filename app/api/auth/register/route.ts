@@ -61,6 +61,7 @@ export async function POST(req: Request) {
                 id: user._id.toString(),
                 name: user.name,
                 avatar: user.avatar,
+                username: user.username,
                 points: user.points,
                 rating: user.rating,
                 rating_count: user.ratingCount

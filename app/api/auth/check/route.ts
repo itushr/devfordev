@@ -34,6 +34,7 @@ export async function GET() {
                 id: user._id.toString(),
                 name: user.name,
                 avatar: user.avatar,
+                username: user.username,
                 points: user.points,
                 rating: user.rating,
                 rating_count: user.ratingCount
