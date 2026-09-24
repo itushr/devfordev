@@ -57,6 +57,14 @@ export async function POST(req: Request) {
         const response = NextResponse.json({
             success: true,
             message: "Registration successful.",
+            payload: {
+                id: user._id.toString(),
+                name: user.name,
+                avatar: user.avatar,
+                points: user.points,
+                rating: user.rating,
+                rating_count: user.ratingCount
+            }
         });
 
         response.cookies.set({

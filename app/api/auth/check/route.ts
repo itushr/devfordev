@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/jwt";
+import { generateToken, verifyToken } from "@/lib/jwt";
+import { NextResponse } from "next/server";
+import User from "@/models/User";
 
 export async function GET() {
     const token = (await cookies()).get("token")?.value;
@@ -14,9 +16,48 @@ export async function GET() {
     try {
         const payload = verifyToken(token);
 
-        return Response.json(payload);
+        const user = await User.findOne({
+            _id: payload.id
+        });
+
+        if (!user) {
+            return NextResponse.json(
+                { message: "Unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const response = NextResponse.json({
+            success: true,
+            message: "Auto Login successful.",
+            payload: {
+                id: user._id.toString(),
+                name: user.name,
+                avatar: user.avatar,
+                points: user.points,
+                rating: user.rating,
+                rating_count: user.ratingCount
+            }
+        });
+
+        const newToken = generateToken({
+            id: user._id.toString(),
+            role: user.role,
+        });
+
+        response.cookies.set({
+            name: "token",
+            value: newToken,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24 * 30,
+        });
+
+        return response;
     } catch {
-        return Response.json(
+        return NextResponse.json(
             { message: "Unauthorized" },
             { status: 401 }
         );
