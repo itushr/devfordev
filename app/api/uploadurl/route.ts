@@ -1,10 +1,7 @@
-// TO DO:
-// ownership control
-
 import { NextResponse } from "next/server";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { bucketName, r2 } from "@/lib/r2";
+import { privateBucketName, r2 } from "@/lib/r2";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -62,10 +59,10 @@ export async function POST(req: Request) {
         }
 
         //file storage
-        const key = `uploads/${crypto.randomUUID()}.${EXTENSIONS[contentType]}`;
+        const key = `${crypto.randomUUID()}.${EXTENSIONS[contentType]}`;
 
         const command = new PutObjectCommand({
-            Bucket: bucketName,
+            Bucket: privateBucketName,
             Key: key,
             ContentType: contentType,
             ContentLength: size,
