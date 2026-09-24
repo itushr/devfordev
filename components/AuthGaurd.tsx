@@ -14,7 +14,6 @@ export default function AuthGuard({
 
   const { checkAuth, checkingAuth, authUser } = useAuthStore();
 
-
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -25,11 +24,17 @@ export default function AuthGuard({
     }
   }, [checkingAuth, authUser, pathname, router]);
 
-  if (authUser) return children;
-
   if (checkingAuth) {
-    return <div className="h-dvh flex justify-center items-center">Loading...</div>;
+    return (
+      <div className="h-dvh flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
-  return children;
+  if (!authUser) {
+    return null;
+  }
+
+  return <>{children}</>;
 }
