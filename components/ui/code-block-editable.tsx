@@ -162,7 +162,7 @@ export const CodeBlockEditable = ({
           <div
             ref={lightRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-auto dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&>pre]:leading-relaxed [&_code]:font-mono [&_code]:text-sm"
+            className="pointer-events-none absolute inset-0 scrollbar-none overflow-auto dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&>pre]:leading-relaxed [&_code]:font-mono [&_code]:text-sm"
             dangerouslySetInnerHTML={{ __html: html }}
           />
 
@@ -170,7 +170,7 @@ export const CodeBlockEditable = ({
           <div
             ref={darkRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 hidden overflow-auto dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&>pre]:leading-relaxed [&_code]:font-mono [&_code]:text-sm"
+            className="pointer-events-none absolute inset-0 hidden scrollbar-none overflow-auto dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&>pre]:leading-relaxed [&_code]:font-mono [&_code]:text-sm"
             dangerouslySetInnerHTML={{ __html: darkHtml }}
           />
 
@@ -187,7 +187,7 @@ export const CodeBlockEditable = ({
             autoComplete="off"
             autoCorrect="off"
             className={cn(
-              "absolute inset-0 h-full w-full resize-none overflow-auto bg-transparent p-4 font-mono text-sm leading-relaxed text-transparent caret-foreground outline-none border-none ring-0 focus:outline-none focus:ring-0 whitespace-pre",
+              "absolute inset-0 h-full w-full resize-none scrollbar-none overflow-auto bg-transparent p-4 font-mono text-sm leading-relaxed text-transparent caret-foreground outline-none border-none ring-0 focus:outline-none focus:ring-0 whitespace-pre",
               readOnly && "pointer-events-none"
             )}
             style={{

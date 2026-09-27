@@ -9,7 +9,7 @@ export function CodeBlock({ files }: { files: Array<{ name: string; content: str
     return (
         <div className="overflow-hidden rounded-md border mt-2">
             {files.length > 1 ? (
-                <div className="flex w-full overflow-x-auto scrollbar-hide bg-card text-xs text-foreground/50 border-b">
+                <div className="flex w-full overflow-x-auto scrollbar-hide bg-card text-foreground/50">
                     {files.map((file, idx) => (
                         <button
                             key={idx}
@@ -17,8 +17,8 @@ export function CodeBlock({ files }: { files: Array<{ name: string; content: str
                             onClick={() => setActiveIdx(idx)}
                             className={`px-3 py-2 cursor-pointer font-mono ${
                                 activeIdx === idx
-                                    ? "text-foreground border-b-2 border-pink-500 font-semibold"
-                                    : "hover:text-foreground"
+                                    ? "text-foreground/80"
+                                    : "hover:text-foreground/80"
                             }`}
                         >
                             {file.name}
@@ -33,7 +33,7 @@ export function CodeBlock({ files }: { files: Array<{ name: string; content: str
             <CodeBlockEditable
                 code={activeFile.content}
                 language="js"
-                readOnly={true}
+                readOnly={false}
             />
         </div>
     );
