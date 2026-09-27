@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function GoogleCallbackPage() {
+function GoogleCallback() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const hasCalledApi = useRef(false);
@@ -52,5 +52,13 @@ export default function GoogleCallbackPage() {
         <div className="flex h-full w-full items-center justify-center">
             Authenticating with Google...
         </div>
+    );
+}
+
+export default function GoogleCallbackPage() {
+    return (
+        <Suspense fallback={<div className="flex h-full w-full items-center justify-center">Loading...</div>}>
+            <GoogleCallback />
+        </Suspense>
     );
 }

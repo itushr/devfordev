@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function DiscordCallbackPage() {
+function DiscordCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasCalledApi = useRef(false);
@@ -50,5 +50,13 @@ export default function DiscordCallbackPage() {
     <div className="h-full w-full flex justify-center items-center">
       <p>Authenticating with Discord, please wait...</p>
     </div>
+  );
+}
+
+export default function DiscordCallbackPage() {
+  return (
+    <Suspense fallback={<div className="h-full w-full flex justify-center items-center"><p>Loading...</p></div>}>
+      <DiscordCallback />
+    </Suspense>
   );
 }

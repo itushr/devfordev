@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
 import Post from "@/models/Post";
+import PostLike from "@/models/PostLike";
 import { createPostSchema } from "@/validations/post";
 import { connectDB } from "@/lib/db";
 import { publishMedia } from "@/lib/publishmedia";
+import { verifyToken } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
     try {
@@ -149,13 +151,44 @@ export async function GET(req: NextRequest) {
 
         const posts = await mongoQuery.lean();
 
+        let userId = req.headers.get("user_id");
+        if (!userId) {
+            const token = req.cookies.get("token")?.value;
+            if (token) {
+                try {
+                    const payload = verifyToken(token);
+                    userId = payload?.id;
+                } catch {
+                    // Invalid token
+                }
+            }
+        }
+
+        let likedPostIds = new Set<string>();
+        if (userId && posts.length > 0) {
+            const postIds = posts.map((p: any) => p._id);
+            const userLikes = await PostLike.find({
+                user_id: userId,
+                post_id: { $in: postIds },
+            })
+                .select("post_id")
+                .lean();
+
+            likedPostIds = new Set(userLikes.map((l: any) => l.post_id.toString()));
+        }
+
+        const postsWithLikeStatus = posts.map((post: any) => ({
+            ...post,
+            likedByMe: likedPostIds.has(post._id.toString()),
+        }));
+
         const nextCursor =
             posts.length === limit
                 ? (posts[posts.length - 1] as { _id?: unknown })._id?.toString() ?? null
                 : null;
 
         return NextResponse.json({
-            posts,
+            posts: postsWithLikeStatus,
             nextCursor,
             hasMore: posts.length === limit,
         });

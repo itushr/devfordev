@@ -41,6 +41,7 @@ export type PostItem = {
         bookmarks?: number;
         shares?: number;
     };
+    likedByMe?: boolean;
     createdAt?: string;
     updatedAt?: string;
 };
@@ -138,7 +139,12 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                     )}
                 </div>
 
-                <Social username={post?.author_username} stats={post?.stats} />
+                <Social
+                    postId={post?._id}
+                    username={post?.author_username}
+                    stats={post?.stats}
+                    likedByMe={post?.likedByMe}
+                />
             </div>
         </div>
     );
