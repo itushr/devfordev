@@ -24,9 +24,9 @@ export default function Social({
     ];
 
     return (
-        <div className="flex w-full mt-2 justify-between font-mono text-foreground/50 border rounded-md px-2">
+        <div className="flex w-full mt-3 justify-between font-mono text-foreground/50 border rounded-md px-2">
             <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1">
-                {username || "iamtushar"}
+                {username || "anonymous"}
             </div>
             <div className="flex gap-5 pr-1">
                 {interactions.map((interaction, index) => (

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import PitchCard, { PostItem } from "@/components/pitchCard/PitchCard";
 import Separator from "@/components/Separator";
 import { Loader2 } from "lucide-react";
+import Skeleton from "@/components/pitchCard/Skeleton";
 
 export default function Feed() {
     const [posts, setPosts] = useState<PostItem[]>([]);
@@ -57,14 +58,7 @@ export default function Feed() {
             <div className="w-full">
                 {[...Array(4).keys()].map((_, i) => (
                     <div key={i}>
-                        <div className="w-full px-5 py-4 flex gap-3 animate-pulse">
-                            <div className="size-9 bg-card rounded-full shrink-0" />
-                            <div className="flex-1 space-y-3">
-                                <div className="h-3 w-40 bg-card rounded" />
-                                <div className="h-4 w-3/4 bg-card rounded" />
-                                <div className="h-24 w-full bg-card rounded" />
-                            </div>
-                        </div>
+                        <Skeleton />
                         <Separator />
                     </div>
                 ))}

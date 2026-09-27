@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Avatar from "../Avatar";
 import { Sora } from "next/font/google";
 import Social from "./Social";
@@ -10,7 +9,7 @@ import {
     ImageLayer,
     Divider,
 } from "@/components/ui/image-comparison";
-import { CodeBlockEditable } from "../ui/code-block-editable";
+import { CodeBlock } from "./CodeBlock";
 
 const sora = Sora({
     subsets: ['latin'],
@@ -56,66 +55,30 @@ const formatDate = (dateString?: string) => {
     return `${day}/${month}/${year}`;
 };
 
-function PitchCodeBlock({ files }: { files: Array<{ name: string; content: string }> }) {
-    const [activeIdx, setActiveIdx] = useState(0);
-    const activeFile = files[activeIdx] ?? files[0];
-    if (!files || files.length === 0) return null;
-
-    return (
-        <div className="overflow-hidden rounded-md border mt-2">
-            {files.length > 1 ? (
-                <div className="flex w-full overflow-x-auto scrollbar-hide bg-card text-xs text-foreground/50 border-b">
-                    {files.map((file, idx) => (
-                        <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setActiveIdx(idx)}
-                            className={`px-3 py-2 cursor-pointer font-mono ${
-                                activeIdx === idx
-                                    ? "text-foreground border-b-2 border-pink-500 font-semibold"
-                                    : "hover:text-foreground"
-                            }`}
-                        >
-                            {file.name}
-                        </button>
-                    ))}
-                </div>
-            ) : (
-                <div className="bg-card text-xs text-foreground/60 border-b px-3 py-1.5 font-mono">
-                    {activeFile.name}
-                </div>
-            )}
-            <CodeBlockEditable
-                code={activeFile.content}
-                language="js"
-                readOnly={true}
-            />
-        </div>
-    );
-}
-
 const PitchCard = ({ post }: { post?: PostItem }) => {
     return (
         <div className="w-full bg-background px-5 py-3 flex gap-3">
-            <div className="flex flex-col justify-start relative pt-1">
-                <Avatar image={post?.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} />
+            <div className="flex flex-col justify-end relative pb-0.5">
+                {/* <Avatar image={post?.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} /> */}
+                <Avatar image={"/random-pfps/pfp5.jpeg"} size={9} />
             </div>
+
             <div className="flex-1 min-w-0">
                 {/* header */}
                 <div className="flex justify-between items-center">
-                    <div className="font-mono text-foreground/50 mb-1 text-xs">
-                        {post?.author_name || "Tushar"} ~ {formatDate(post?.createdAt)} ~ {post?.points ?? 25} pts
+                    <div className="font-mono text-foreground/50 mb-1">
+                        {post?.author_name || "Author"} ~ {formatDate(post?.createdAt)} ~ {post?.points ?? "X"} pts
                     </div>
                     <EllipsisVertical size={16} className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground" />
                 </div>
 
                 {/* main content */}
                 <div className={`${sora.className} text-foreground/90 flex flex-col gap-2 mt-1`}>
-                    {post?.data && post.data.length > 0 ? (
+                    {post?.data && post.data.length > 0 && (
                         post.data.map((block, idx) => {
                             if (block.type === "text" && block.text) {
                                 return (
-                                    <div key={idx} className="whitespace-pre-wrap wrap-break-word leading-relaxed text-sm">
+                                    <div key={idx} className="whitespace-pre-wrap wrap-break-word leading-relaxed">
                                         {block.text}
                                     </div>
                                 );
@@ -135,9 +98,8 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                                 return (
                                     <div
                                         key={idx}
-                                        className={`mt-2 grid gap-2 ${
-                                            block.urls.length > 1 ? "grid-cols-2" : "grid-cols-1"
-                                        }`}
+                                        className={`mt-2 grid gap-2 ${block.urls.length > 1 ? "grid-cols-2" : "grid-cols-1"
+                                            }`}
                                     >
                                         {block.urls.map((url, imgIdx) => (
                                             <img
@@ -152,7 +114,7 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                             }
 
                             if (block.type === "code" && block.files && block.files.length > 0) {
-                                return <PitchCodeBlock key={idx} files={block.files} />;
+                                return <CodeBlock key={idx} files={block.files} />;
                             }
 
                             if (block.type === "poll" && block.options && block.options.length > 0) {
@@ -173,11 +135,6 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
 
                             return null;
                         })
-                    ) : (
-                        <div>
-                            <span>Hii there! I am using whatsapp</span>
-                            <div className="w-full aspect-video bg-card mt-2 rounded-md"></div>
-                        </div>
                     )}
                 </div>
 
