@@ -1,5 +1,5 @@
 import { useToggleStore } from "@/store/toggle";
-import { Feather } from "lucide-react";
+import { Command, CornerDownLeft, Feather, Plus } from "lucide-react";
 
 export default function ComposeCTA() {
     const { togglePitchComposer } = useToggleStore();
@@ -9,7 +9,11 @@ export default function ComposeCTA() {
             className="border flex gap-2 justify-center items-center cursor-pointer hover:bg-card py-3 rounded-full"
             onClick={() => togglePitchComposer()}
         >
-            <Feather size={18} /> Compose
+            <Plus size={18} /> Compose
+            <button className="flex gap-1 border rounded-sm px-2 py-1 items-center">
+                <Command size={12} />
+                <CornerDownLeft size={13} />
+            </button>
         </div>
     )
 }
