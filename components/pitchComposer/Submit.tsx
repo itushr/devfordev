@@ -18,7 +18,7 @@ export default function Submit() {
     const { images, compare, clearImages } = useUploadStore();
     const { files, clearFiles } = useComposerCodeStore();
     const { pollEnabled, options, resetPoll } = useComposerPoll();
-    const { showPitchComposer, togglePitchComposer } = useToggleStore();
+    const { showPitchComposer, togglePitchComposer, replyTarget, clearReplyTarget } = useToggleStore();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -107,22 +107,35 @@ export default function Submit() {
         try {
             setIsSubmitting(true);
 
-            const res = await fetch("/api/post", {
+            const isReplying = Boolean(replyTarget && replyTarget.postId);
+            const endpoint = isReplying
+                ? `/api/posts/${replyTarget!.postId}/comments`
+                : "/api/post";
+
+            const payload = isReplying
+                ? {
+                      content: trimmedText,
+                      data,
+                      replyToUsername: replyTarget!.username,
+                  }
+                : { data };
+
+            const res = await fetch(endpoint, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ data }),
+                body: JSON.stringify(payload),
             });
 
             if (res.status === 401) {
-                throw new Error("Please log in to pitch");
+                throw new Error(isReplying ? "Please log in to reply" : "Please log in to pitch");
             }
 
             const json = await res.json();
 
             if (!res.ok) {
-                throw new Error(json.error || "Failed to post pitch");
+                throw new Error(json.error || (isReplying ? "Failed to post comment" : "Failed to post pitch"));
             }
 
             // Successfully posted: reset stores
@@ -131,14 +144,28 @@ export default function Submit() {
             clearFiles();
             resetPoll();
 
+            const currentReplyTarget = replyTarget;
+            clearReplyTarget();
+
             if (showPitchComposer) {
                 await togglePitchComposer();
             }
 
             if (typeof window !== "undefined") {
-                window.dispatchEvent(
-                    new CustomEvent("pitch-created", { detail: json.post })
-                );
+                if (isReplying && currentReplyTarget) {
+                    window.dispatchEvent(
+                        new CustomEvent("comment-created", {
+                            detail: {
+                                postId: currentReplyTarget.postId,
+                                comment: json.comment,
+                            },
+                        })
+                    );
+                } else {
+                    window.dispatchEvent(
+                        new CustomEvent("pitch-created", { detail: json.post })
+                    );
+                }
             }
 
             router.refresh();
@@ -159,7 +186,9 @@ export default function Submit() {
         isSubmitting,
         isUploading,
         isEmpty,
+        replyTarget,
         showPitchComposer,
+        clearReplyTarget,
         togglePitchComposer,
         clearText,
         clearImages,

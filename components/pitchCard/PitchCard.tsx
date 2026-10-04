@@ -4,6 +4,7 @@ import Avatar from "../Avatar";
 import { Sora } from "next/font/google";
 import Social from "./Social";
 import { EllipsisVertical } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
     ImageSlider,
     ImageLayer,
@@ -32,6 +33,7 @@ export type PostItem = {
     author_username: string;
     author_avatar?: string;
     points: number;
+    slug?: string;
     data: PostDataBlock[];
     stats?: {
         flames?: number;
@@ -56,12 +58,40 @@ const formatDate = (dateString?: string) => {
     return `${day}/${month}/${year}`;
 };
 
-const PitchCard = ({ post }: { post?: PostItem }) => {
+const PitchCard = ({
+    post,
+    disableCommentClick = false,
+    disableNavigation = false,
+}: {
+    post?: PostItem;
+    disableCommentClick?: boolean;
+    disableNavigation?: boolean;
+}) => {
+    const router = useRouter();
+
+    const handleContentClick = (e: React.MouseEvent) => {
+        if (disableNavigation || !post?._id) return;
+        const target = e.target as HTMLElement;
+        if (
+            target.closest("button") ||
+            target.closest("a") ||
+            target.closest("input") ||
+            target.closest("[data-prevent-nav]")
+        ) {
+            return;
+        }
+        router.push(`/post/${post.slug || post._id}`);
+    };
+
     return (
-        <div className="w-full bg-background px-5 py-3 flex gap-3">
-            <div className="flex flex-col justify-end relative pb-0.5">
-                {/* <Avatar image={post?.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} /> */}
-                <Avatar image={"/random-pfps/pfp5.jpeg"} size={9} />
+        <div
+            onClick={handleContentClick}
+            className={`w-full bg-background px-5 py-3 flex gap-3 transition-colors ${
+                !disableNavigation ? "cursor-pointer hover:bg-card/20" : ""
+            }`}
+        >
+            <div className="flex flex-col justify-end relative pb-0.5" data-prevent-nav>
+                <Avatar image={post?.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -70,7 +100,11 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                     <div className="font-mono text-foreground/50 mb-1">
                         {post?.author_name || "Author"} ~ {formatDate(post?.createdAt)} ~ {post?.points ?? "X"} pts
                     </div>
-                    <EllipsisVertical size={16} className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground" />
+                    <EllipsisVertical
+                        size={16}
+                        data-prevent-nav
+                        className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground"
+                    />
                 </div>
 
                 {/* main content */}
@@ -88,19 +122,20 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                             if (block.type === "images" && block.urls && block.urls.length > 0) {
                                 if (block.compare && block.urls.length === 2) {
                                     return (
-                                        <ImageSlider key={idx} className="h-80 w-full overflow-hidden rounded-xl bg-card mt-2">
-                                            <ImageLayer src={block.urls[0]} alt="Before" layer="first" />
-                                            <ImageLayer src={block.urls[1]} alt="After" layer="second" />
-                                            <Divider />
-                                        </ImageSlider>
+                                        <div key={idx} data-prevent-nav>
+                                            <ImageSlider className="h-80 w-full overflow-hidden rounded-xl bg-card mt-2">
+                                                <ImageLayer src={block.urls[0]} alt="Before" layer="first" />
+                                                <ImageLayer src={block.urls[1]} alt="After" layer="second" />
+                                                <Divider />
+                                            </ImageSlider>
+                                        </div>
                                     );
                                 }
 
                                 return (
                                     <div
                                         key={idx}
-                                        className={`mt-2 grid gap-2 ${block.urls.length > 1 ? "grid-cols-2" : "grid-cols-1"
-                                            }`}
+                                        className={`mt-2 grid gap-2 ${block.urls.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}
                                     >
                                         {block.urls.map((url, imgIdx) => (
                                             <img
@@ -115,12 +150,16 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                             }
 
                             if (block.type === "code" && block.files && block.files.length > 0) {
-                                return <CodeBlock key={idx} files={block.files} />;
+                                return (
+                                    <div key={idx} data-prevent-nav>
+                                        <CodeBlock files={block.files} />
+                                    </div>
+                                );
                             }
 
                             if (block.type === "poll" && block.options && block.options.length > 0) {
                                 return (
-                                    <div key={idx} className="w-full space-y-2 mt-2">
+                                    <div key={idx} data-prevent-nav className="w-full space-y-2 mt-2">
                                         {block.options.map((option, optIdx) => (
                                             <div
                                                 key={optIdx}
@@ -139,12 +178,15 @@ const PitchCard = ({ post }: { post?: PostItem }) => {
                     )}
                 </div>
 
-                <Social
-                    postId={post?._id}
-                    username={post?.author_username}
-                    stats={post?.stats}
-                    likedByMe={post?.likedByMe}
-                />
+                <div data-prevent-nav>
+                    <Social
+                        postId={post?._id}
+                        username={post?.author_username}
+                        stats={post?.stats}
+                        likedByMe={post?.likedByMe}
+                        disableCommentClick={disableCommentClick}
+                    />
+                </div>
             </div>
         </div>
     );

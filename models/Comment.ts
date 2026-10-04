@@ -7,7 +7,6 @@ const FileSchema = new Schema(
             required: true,
             trim: true,
         },
-
         content: {
             type: String,
             required: true,
@@ -23,23 +22,18 @@ const DataSchema = new Schema(
             required: true,
             enum: ["text", "images", "code", "poll"],
         },
-
         text: {
             type: String,
         },
-
         urls: {
             type: [String],
         },
-
         compare: {
             type: Boolean,
         },
-
         files: {
             type: [FileSchema],
         },
-
         options: {
             type: [String],
         },
@@ -47,49 +41,22 @@ const DataSchema = new Schema(
     { _id: false }
 );
 
-const StatsSchema = new Schema(
+const CommentSchema = new Schema(
     {
-        flames: {
-            type: Number,
-            default: 0,
-            min: 0,
+        post_id: {
+            type: Schema.Types.ObjectId,
+            ref: "Post",
+            required: true,
+            index: true,
         },
 
-        likes: {
-            type: Number,
-            default: 0,
-            min: 0,
+        parent_id: {
+            type: Schema.Types.ObjectId,
+            ref: "Comment",
+            default: null,
+            index: true,
         },
 
-        comments: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-
-        impressions: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-
-        bookmarks: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-
-        shares: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-    },
-    { _id: false }
-);
-
-const PostSchema = new Schema(
-    {
         author_id: {
             type: String,
             required: true,
@@ -114,32 +81,44 @@ const PostSchema = new Schema(
             type: String,
         },
 
-        points: {
-            type: Number,
-            default: 10,
-            min: 0,
-        },
-
-        slug: {
+        content: {
             type: String,
             trim: true,
-            lowercase: true,
-            sparse: true,
-            index: true,
         },
 
         data: {
             type: [DataSchema],
-            required: true,
-            validate: {
-                validator: (value: unknown[]) => value.length > 0,
-                message: "Post data cannot be empty",
-            },
+            default: [],
         },
 
-        stats: {
-            type: StatsSchema,
-            default: () => ({}),
+        points: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+
+        pointsAwarded: {
+            type: Boolean,
+            default: false,
+            index: true,
+        },
+
+        likes: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+
+        repliesCount: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+
+        replyToUsername: {
+            type: String,
+            trim: true,
+            lowercase: true,
         },
     },
     {
@@ -147,6 +126,10 @@ const PostSchema = new Schema(
     }
 );
 
-const Post = models.Post || model("Post", PostSchema);
+CommentSchema.index({ post_id: 1, parent_id: 1, createdAt: -1 });
+CommentSchema.index({ post_id: 1, createdAt: -1 });
+CommentSchema.index({ parent_id: 1, createdAt: 1 });
 
-export default Post;
+const Comment = models.Comment || model("Comment", CommentSchema);
+
+export default Comment;

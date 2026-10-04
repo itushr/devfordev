@@ -1,18 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Activity, Bookmark, Flame, Heart, MessageCircle, Send } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Activity, Bookmark, Heart, MessageCircle, Send } from "lucide-react";
+import { useToggleStore } from "@/store/toggle";
 
 export default function Social({
     postId,
     username,
     stats,
     likedByMe = false,
+    disableCommentClick = false,
 }: {
     postId?: string;
     username?: string;
     stats?: {
-        flames?: number;
         likes?: number;
         comments?: number;
         impressions?: number;
@@ -20,87 +21,83 @@ export default function Social({
         shares?: number;
     };
     likedByMe?: boolean;
+    disableCommentClick?: boolean;
 }) {
     const [isLiked, setIsLiked] = useState<boolean>(likedByMe);
     const [likesCount, setLikesCount] = useState<number>(stats?.likes ?? 0);
+    const [commentsCount, setCommentsCount] = useState<number>(stats?.comments ?? 0);
 
-    const desiredLikedRef = useRef<boolean>(likedByMe);
-    const lastSentStateRef = useRef<boolean>(likedByMe);
-    const inFlightRef = useRef<boolean>(false);
+    const { openComposerWithReply } = useToggleStore();
 
     useEffect(() => {
         setIsLiked(likedByMe);
-        desiredLikedRef.current = likedByMe;
-        lastSentStateRef.current = likedByMe;
     }, [likedByMe]);
 
     useEffect(() => {
         setLikesCount(stats?.likes ?? 0);
     }, [stats?.likes]);
 
-    const syncLikeState = useCallback(async () => {
-        if (!postId) return;
-        if (inFlightRef.current) return;
+    useEffect(() => {
+        setCommentsCount(stats?.comments ?? 0);
+    }, [stats?.comments]);
 
-        inFlightRef.current = true;
-
-        try {
-            while (desiredLikedRef.current !== lastSentStateRef.current) {
-                const targetState = desiredLikedRef.current;
-                lastSentStateRef.current = targetState;
-
-                const method = targetState ? "PUT" : "DELETE";
-                const res = await fetch(`/api/posts/${postId}/like`, {
-                    method,
-                    credentials: "include",
-                });
-
-                if (!res.ok) {
-                    if (res.status === 401) {
-                        desiredLikedRef.current = !targetState;
-                        lastSentStateRef.current = !targetState;
-                        setIsLiked(!targetState);
-                        setLikesCount((prev) => Math.max(0, prev + (!targetState ? 1 : -1)));
-                        break;
-                    }
-                } else {
-                    const data = await res.json();
-                    if (typeof data.likes === "number" && desiredLikedRef.current === targetState) {
-                        setLikesCount(data.likes);
-                    }
-                }
+    useEffect(() => {
+        const handleCommentCreated = (e: Event) => {
+            const customEvent = e as CustomEvent<{ postId: string }>;
+            if (customEvent.detail && customEvent.detail.postId === postId) {
+                setCommentsCount((prev) => prev + 1);
             }
-        } catch (error) {
-            console.error("Error syncing like state:", error);
-        } finally {
-            inFlightRef.current = false;
-            if (desiredLikedRef.current !== lastSentStateRef.current) {
-                syncLikeState();
-            }
-        }
+        };
+
+        window.addEventListener("comment-created", handleCommentCreated);
+        return () => window.removeEventListener("comment-created", handleCommentCreated);
     }, [postId]);
 
-    const handleLikeClick = (e: React.MouseEvent) => {
+    const handleLikeClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
         if (!postId) return;
 
-        const newDesired = !desiredLikedRef.current;
-        desiredLikedRef.current = newDesired;
-        setIsLiked(newDesired);
-        setLikesCount((prev) => Math.max(0, prev + (newDesired ? 1 : -1)));
+        const nextLiked = !isLiked;
+        setIsLiked(nextLiked);
+        setLikesCount((prev) => Math.max(0, prev + (nextLiked ? 1 : -1)));
 
-        if (!inFlightRef.current) {
-            syncLikeState();
+        try {
+            const method = nextLiked ? "PUT" : "DELETE";
+            const res = await fetch(`/api/posts/${postId}/like`, {
+                method,
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                // Revert on failure
+                setIsLiked(!nextLiked);
+                setLikesCount((prev) => Math.max(0, prev + (nextLiked ? -1 : 1)));
+            } else {
+                const data = await res.json();
+                if (typeof data.likes === "number") {
+                    setLikesCount(data.likes);
+                }
+            }
+        } catch (error) {
+            console.error("Error toggling like:", error);
+            setIsLiked(!nextLiked);
+            setLikesCount((prev) => Math.max(0, prev + (nextLiked ? -1 : 1)));
+        }
+    };
+
+    const handleCommentClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (disableCommentClick) {
+            // on clicking comment icon in post/[slug] page nothing happens
+            return;
+        }
+
+        if (postId && username) {
+            openComposerWithReply({ postId, username });
         }
     };
 
     const interactions = [
-        {
-            icon: <Flame size={17} />,
-            count: stats?.flames ?? 0,
-            onClick: undefined,
-            active: false,
-        },
         {
             icon: (
                 <Heart
@@ -114,8 +111,8 @@ export default function Social({
         },
         {
             icon: <MessageCircle size={15} />,
-            count: stats?.comments ?? 0,
-            onClick: undefined,
+            count: commentsCount,
+            onClick: handleCommentClick,
             active: false,
         },
         {
