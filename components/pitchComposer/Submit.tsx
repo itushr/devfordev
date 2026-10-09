@@ -11,7 +11,17 @@ import { useUploadStore } from "@/store/upload";
 import { useToggleStore } from "@/store/toggle";
 import { PostData } from "@/validations/post";
 
-export default function Submit() {
+export default function Submit({
+    postId,
+    parentCommentId,
+    replyToUsername,
+    onSuccess,
+}: {
+    postId?: string;
+    parentCommentId?: string;
+    replyToUsername?: string;
+    onSuccess?: (comment: any) => void;
+} = {}) {
     const router = useRouter();
 
     const { text, clearText } = useComposerText();
@@ -107,16 +117,22 @@ export default function Submit() {
         try {
             setIsSubmitting(true);
 
-            const isReplying = Boolean(replyTarget && replyTarget.postId);
-            const endpoint = isReplying
-                ? `/api/posts/${replyTarget!.postId}/comments`
-                : "/api/post";
+            const targetPostId = postId || replyTarget?.postId;
+            const targetUsername = replyToUsername || replyTarget?.username;
+            const isReplying = Boolean(parentCommentId || targetPostId);
+
+            let endpoint = "/api/post";
+            if (parentCommentId) {
+                endpoint = `/api/comments/${parentCommentId}/replies`;
+            } else if (targetPostId) {
+                endpoint = `/api/posts/${targetPostId}/comments`;
+            }
 
             const payload = isReplying
                 ? {
                       content: trimmedText,
                       data,
-                      replyToUsername: replyTarget!.username,
+                      replyToUsername: targetUsername,
                   }
                 : { data };
 
@@ -147,16 +163,18 @@ export default function Submit() {
             const currentReplyTarget = replyTarget;
             clearReplyTarget();
 
+            onSuccess?.(json.comment);
+
             if (showPitchComposer) {
                 await togglePitchComposer();
             }
 
             if (typeof window !== "undefined") {
-                if (isReplying && currentReplyTarget) {
+                if (isReplying && targetPostId) {
                     window.dispatchEvent(
                         new CustomEvent("comment-created", {
                             detail: {
-                                postId: currentReplyTarget.postId,
+                                postId: targetPostId,
                                 comment: json.comment,
                             },
                         })
@@ -187,6 +205,10 @@ export default function Submit() {
         isUploading,
         isEmpty,
         replyTarget,
+        postId,
+        parentCommentId,
+        replyToUsername,
+        onSuccess,
         showPitchComposer,
         clearReplyTarget,
         togglePitchComposer,

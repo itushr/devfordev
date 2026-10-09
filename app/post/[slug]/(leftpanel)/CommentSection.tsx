@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import CommentComposer from "@/components/comments/CommentComposer";
+import PitchComposer from "@/components/pitchComposer/PitchComposer";
 import CommentList from "@/components/comments/CommentList";
 import { CommentItemType } from "@/components/comments/types";
 import Separator from "@/components/Separator";
@@ -83,10 +83,11 @@ export default function CommentSection({
 
     return (
         <div className="w-full">
-            {/* Twitter-like inline comment composer (no terminal) */}
-            <CommentComposer
+            {/* PitchComposer utilized directly without terminal */}
+            <PitchComposer
                 postId={postId}
                 replyToUsername={authorUsername}
+                placeholder="Pitch your opinion..."
                 onCommentCreated={handleCommentCreated}
             />
 

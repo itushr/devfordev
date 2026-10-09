@@ -44,5 +44,6 @@ export const config = {
         "/api/post/:path*",
         "/api/posts/:path*",
         "/api/comments/:path*",
+        "/api/users/:path*",
     ],
 };

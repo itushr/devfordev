@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 
-export type Relation = "following" | "follower" | "mutual";
+export type Relation = "following" | "follower" | "mutual" | "interaction";
 
 export interface NetworkNode {
     id: string;
@@ -53,6 +53,11 @@ const relationConfig: Record<
         label: "Follower",
         line: "stroke-emerald-500/40",
         badge: "bg-emerald-500/10 text-emerald-500",
+    },
+    interaction: {
+        label: "Interacted",
+        line: "stroke-pink-500/40",
+        badge: "bg-pink-500/10 text-pink-500",
     },
 };
 
@@ -327,7 +332,11 @@ export default function SocialNet({
                                 fill="none"
                                 strokeWidth={1.5}
                                 strokeDasharray={
-                                    edge.relation === "following" ? "6 6" : undefined
+                                    edge.relation === "following"
+                                        ? "6 6"
+                                        : edge.relation === "interaction"
+                                        ? "3 4"
+                                        : undefined
                                 }
                                 className={`${relationConfig[edge.relation].line} transition-all duration-300 opacity-60`}
                             />

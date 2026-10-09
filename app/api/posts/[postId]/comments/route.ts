@@ -5,6 +5,7 @@ import { verifyToken } from "@/lib/jwt";
 import Post from "@/models/Post";
 import Comment from "@/models/Comment";
 import CommentLike from "@/models/CommentLike";
+import UserInteraction from "@/models/UserInteraction";
 import { createCommentSchema } from "@/validations/comment";
 
 export async function GET(
@@ -202,6 +203,19 @@ export async function POST(
         await Post.findByIdAndUpdate(post._id, {
             $inc: { "stats.comments": 1 },
         });
+
+        // Update interaction aggregate for top-level comments (actor != post author)
+        const postAuthorId = post.author_id?.toString();
+        if (postAuthorId && postAuthorId !== userId) {
+            await UserInteraction.findOneAndUpdate(
+                { actor_id: userId, target_id: postAuthorId },
+                {
+                    $inc: { comments_count: 1 },
+                    $set: { last_interacted_at: new Date() },
+                },
+                { upsert: true, new: true }
+            );
+        }
 
         return NextResponse.json(
             {

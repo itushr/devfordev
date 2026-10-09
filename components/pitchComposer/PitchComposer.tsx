@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import Avatar from "../Avatar";
 import TextArea from "./TextArea";
 import PitchAddons from "./PitchAddons";
@@ -17,17 +16,36 @@ const sora = Sora({
     weight: ['400', '500', '600', '700', '800']
 });
 
-export default function PitchComposer() {
+export default function PitchComposer({
+    postId,
+    parentCommentId,
+    replyToUsername,
+    placeholder = "Pitch your thought...",
+    onCommentCreated,
+}: {
+    postId?: string;
+    parentCommentId?: string;
+    replyToUsername?: string;
+    placeholder?: string;
+    onCommentCreated?: (comment: any) => void;
+} = {}) {
     const [isDragging, setIsDragging] = useState(false);
 
     return (
         <DropArea setIsDragging={setIsDragging}>
-            <div className="w-full px-5 pt-3 flex gap-3">
+            <div className="w-full px-5 pt-3 pb-3 flex gap-3">
                 <Avatar image="/random-pfps/pfp5.jpeg" size={9} />
 
                 <div className="flex-1">
-                    <div className={`${sora.className} flex flex-col gap-3 pt-1 min-h-50 text-base`}>
-                        <TextArea />
+                    {replyToUsername && (
+                        <div className="font-mono text-xs text-foreground/50 mb-1 flex items-center gap-1.5">
+                            <span>Replying to</span>
+                            <span className="text-pink-500 font-semibold">@{replyToUsername}</span>
+                        </div>
+                    )}
+
+                    <div className={`${sora.className} flex flex-col gap-3 pt-1 min-h-36 text-base`}>
+                        <TextArea placeholder={placeholder} />
 
                         {isDragging && (
                             <div className="w-full aspect-video bg-card mt-3 rounded-md flex items-center justify-center font-serif text-foreground/50">
@@ -42,7 +60,12 @@ export default function PitchComposer() {
 
                     <div className="border-t mt-3 pt-2 flex justify-between items-center text-foreground/80">
                         <PitchAddons />
-                        <Submit />
+                        <Submit
+                            postId={postId}
+                            parentCommentId={parentCommentId}
+                            replyToUsername={replyToUsername}
+                            onSuccess={onCommentCreated}
+                        />
                     </div>
                 </div>
             </div>

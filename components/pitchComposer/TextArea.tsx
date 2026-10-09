@@ -89,7 +89,11 @@ const highlightUrls = (text: string): string => {
 };
 
 
-const TextArea = () => {
+const TextArea = ({
+    placeholder = "Pitch your thought...",
+}: {
+    placeholder?: string;
+}) => {
     const { text, setText } = useComposerText();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -141,7 +145,7 @@ const TextArea = () => {
                 value={text}
                 spellCheck={false}
                 onChange={handleInput}
-                placeholder="Pitch your thought..."
+                placeholder={placeholder}
                 className="
                     relative
                     w-full

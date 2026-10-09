@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import { verifyToken } from "@/lib/jwt";
 import Post from "@/models/Post";
 import PostLike from "@/models/PostLike";
+import UserInteraction from "@/models/UserInteraction";
 
 export async function PUT(
     req: NextRequest,
@@ -74,6 +75,19 @@ export async function PUT(
                     );
 
                     likesCount = updatedPost?.stats?.likes ?? (post.stats?.likes ?? 0) + 1;
+
+                    // Update interaction aggregate — only when actor != post author
+                    const postAuthorId = post.author_id?.toString();
+                    if (postAuthorId && postAuthorId !== userId) {
+                        await UserInteraction.findOneAndUpdate(
+                            { actor_id: userId, target_id: postAuthorId },
+                            {
+                                $inc: { likes_count: 1 },
+                                $set: { last_interacted_at: new Date() },
+                            },
+                            { upsert: true, new: true }
+                        );
+                    }
                 } else {
                     likesCount = post.stats?.likes ?? 0;
                 }
@@ -175,6 +189,24 @@ export async function DELETE(
                     );
 
                     likesCount = Math.max(0, updatedPost?.stats?.likes ?? 0);
+
+                    // Decrement interaction aggregate — only when actor != post author
+                    const postAuthorId = post.author_id?.toString();
+                    if (postAuthorId && postAuthorId !== userId) {
+                        await UserInteraction.findOneAndUpdate(
+                            { actor_id: userId, target_id: postAuthorId },
+                            [
+                                {
+                                    $set: {
+                                        likes_count: {
+                                            $max: [0, { $subtract: ["$likes_count", 1] }],
+                                        },
+                                        last_interacted_at: new Date(),
+                                    },
+                                },
+                            ]
+                        );
+                    }
                 } else {
                     likesCount = Math.max(0, post.stats?.likes ?? 0);
                 }

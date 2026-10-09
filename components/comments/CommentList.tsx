@@ -2,6 +2,8 @@
 
 import { CommentItemType } from "./types";
 import CommentItem from "./CommentItem";
+import Separator from "@/components/Separator";
+import Skeleton from "@/components/pitchCard/Skeleton";
 import { MessageSquare } from "lucide-react";
 
 export default function CommentList({
@@ -19,15 +21,11 @@ export default function CommentList({
 }) {
     if (loading) {
         return (
-            <div className="w-full divide-y divide-border/30">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="px-5 py-4 flex gap-3 animate-pulse">
-                        <div className="w-9 h-9 rounded-full bg-card" />
-                        <div className="flex-1 space-y-2">
-                            <div className="w-32 h-3 bg-card rounded" />
-                            <div className="w-full h-4 bg-card rounded" />
-                            <div className="w-2/3 h-4 bg-card rounded" />
-                        </div>
+            <div className="w-full">
+                {[...Array(3).keys()].map((_, i) => (
+                    <div key={i}>
+                        <Skeleton />
+                        <Separator />
                     </div>
                 ))}
             </div>
@@ -36,11 +34,11 @@ export default function CommentList({
 
     if (comments.length === 0) {
         return (
-            <div className="py-12 text-center text-foreground/50 font-mono text-sm space-y-2">
-                <MessageSquare className="mx-auto size-6 text-foreground/30" />
+            <div className="py-16 text-center text-foreground/50 font-mono text-sm space-y-2">
+                <MessageSquare className="mx-auto size-7 text-foreground/30" />
                 <p>No comments yet.</p>
                 <p className="text-xs text-foreground/40">
-                    Be the first to share your thoughts or code opinion!
+                    Be the first to pitch your opinion!
                 </p>
             </div>
         );
@@ -49,13 +47,15 @@ export default function CommentList({
     return (
         <div className="w-full">
             {comments.map((comment) => (
-                <CommentItem
-                    key={comment._id}
-                    comment={comment}
-                    postAuthorId={postAuthorId}
-                    isPostAuthor={isPostAuthor}
-                    onPointsChange={onPointsChange}
-                />
+                <div key={comment._id}>
+                    <CommentItem
+                        comment={comment}
+                        postAuthorId={postAuthorId}
+                        isPostAuthor={isPostAuthor}
+                        onPointsChange={onPointsChange}
+                    />
+                    <Separator />
+                </div>
             ))}
         </div>
     );
