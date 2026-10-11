@@ -28,7 +28,7 @@ const contributors: Contributor[] = [
 const Contributors = () => {
   return (
     <div className="p-5">
-      <p className="text-lg">Today's Contributors</p>
+      <p className="text-lg">Top Contributors</p>
 
       <div className="flex flex-col gap-5 mt-5">
         {contributors.map((contributor, index) => (
