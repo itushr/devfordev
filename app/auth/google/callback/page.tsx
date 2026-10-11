@@ -33,11 +33,13 @@ function GoogleCallback() {
                 const data = await res.json();
 
                 if (data.success) {
-                    router.replace("/");
+                    const { useAuthStore } = await import("@/store/auth");
+                    await useAuthStore.getState().checkAuth();
+                    router.replace("/home");
                     router.refresh();
                 } else {
                     alert(data.message || "Google authentication failed.");
-                    router.replace("/login");
+                    router.replace("/auth/login");
                 }
             } catch (err) {
                 console.error(err);

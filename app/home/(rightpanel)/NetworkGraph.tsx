@@ -72,7 +72,7 @@ const NetworkGraph = () => {
     }
 
     return (
-        <div className="h-80 overflow-hidden">
+        <div className="h-100">
             <SocialNet
                 nodes={nodes}
                 edges={edges}

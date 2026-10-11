@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth";
 
 import { Button } from "@/components/ui/button";
-import InputBox from "@/components/ui/inputBox"
+import InputBox from "@/components/ui/inputBox";
 
-const registerSchema = z.object({
+const registrationFormSchema = z.object({
     name: z
         .string()
         .min(3, "Name must be at least 3 characters")
@@ -21,22 +23,24 @@ const registerSchema = z.object({
 
     password: z
         .string()
-        .min(6, "Password must be at least 6 characters")
+        .min(6, "Password must be at least 6 characters"),
 });
 
-type RegisterForm = z.infer<typeof registerSchema>;
+type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 
 export default function RegistrationForm() {
     const [showPassword, setShowPassword] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
+    const router = useRouter();
+    const { checkAuth } = useAuthStore();
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-    } = useForm<RegisterForm>({
-        resolver: zodResolver(registerSchema),
-        mode: "onChange",
-        reValidateMode: "onChange",
+    } = useForm<RegistrationFormValues>({
+        resolver: zodResolver(registrationFormSchema),
+        mode: "onSubmit",
         defaultValues: {
             name: "",
             email: "",
@@ -44,8 +48,32 @@ export default function RegistrationForm() {
         },
     });
 
-    const onSubmit = async (data: RegisterForm) => {
-        // working on it
+    const onSubmit = async (data: RegistrationFormValues) => {
+        setServerError(null);
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+                credentials: "include",
+            });
+
+            const json = await res.json();
+
+            if (!res.ok || !json.success) {
+                setServerError(json.message || "Registration failed.");
+                return;
+            }
+
+            // Sync auth state
+            await checkAuth();
+
+            router.push("/home");
+            router.refresh();
+        } catch (err) {
+            console.error("Registration error:", err);
+            setServerError("Something went wrong. Please try again.");
+        }
     };
 
     return (
@@ -53,6 +81,12 @@ export default function RegistrationForm() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex w-full flex-col gap-5 mt-5"
         >
+            {serverError && (
+                <div className="p-3 text-sm rounded bg-red-500/10 text-red-500 border border-red-500/20 font-mono">
+                    {serverError}
+                </div>
+            )}
+
             {/* Name */}
             <div>
                 <label htmlFor="name" className="sr-only">
@@ -127,7 +161,7 @@ export default function RegistrationForm() {
 
             <Button
                 type="submit"
-                className="w-full mt-5"
+                className="w-full mt-5 cursor-pointer"
                 disabled={isSubmitting}
             >
                 {isSubmitting ? "Creating Account..." : "Sign Up"}

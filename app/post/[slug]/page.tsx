@@ -1,6 +1,6 @@
 import Sidebar from "@/components/sidebar/Sidebar";
 import LeftPanel from "./(leftpanel)/LeftPanel";
-import RightPanel from "./(rightpanel)/RightPanel";
+import RightPanel from "../../home/(rightpanel)/RightPanel"
 import NotificationPanel from "@/components/ActivitiesPanel";
 import PitchComposerModel from "@/components/pitchComposer/PitchComposerModel";
 

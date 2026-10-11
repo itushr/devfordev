@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Avatar({
     image,
-    size,
+    size = 12,
 }: {
     image?: string;
     size?: number;
@@ -12,7 +12,9 @@ export default function Avatar({
     const [avatar, setAvatar] = useState<string | null>(image ?? null);
 
     useEffect(() => {
-        if (!image) {
+        if (image) {
+            setAvatar(image);
+        } else {
             const randomPfp = Math.floor(Math.random() * 4) + 1;
             setAvatar(`/random-pfps/pfp${randomPfp}.jpeg`);
         }
@@ -20,11 +22,11 @@ export default function Avatar({
 
     return (
         <div
-            className={`${size ? `size-${size}` : 'size-12'} bg-card rounded-full bg-cover bg-center`}
+            className="rounded-full bg-card bg-cover bg-center shrink-0 border"
             style={{
-                backgroundImage: avatar
-                    ? `url("${avatar}")`
-                    : undefined,
+                width: `${size * 4}px`,
+                height: `${size * 4}px`,
+                backgroundImage: avatar ? `url("${avatar}")` : undefined,
             }}
         />
     );

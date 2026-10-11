@@ -35,9 +35,12 @@ export async function GET() {
                 name: user.name,
                 avatar: user.avatar,
                 username: user.username,
+                email: user.email,
                 points: user.points,
                 rating: user.rating,
-                rating_count: user.ratingCount
+                rating_count: user.ratingCount,
+                description: user.description,
+                createdAt: user.createdAt,
             }
         });
 

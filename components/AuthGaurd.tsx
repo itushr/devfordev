@@ -39,10 +39,21 @@
 //   return <>{children}</>;
 // }
 
+"use client";
+
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/auth";
+
 export default function AuthGuard({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  const { checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  return <>{children}</>;
 }

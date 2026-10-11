@@ -4,7 +4,13 @@ export type AuthUser = {
     id: string;
     name: string;
     username: string;
+    email?: string;
     avatar?: string;
+    points?: number;
+    rating?: number;
+    rating_count?: number;
+    description?: string;
+    createdAt?: string;
 };
 
 type AuthState = {

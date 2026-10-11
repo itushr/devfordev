@@ -31,11 +31,13 @@ function GitHubCallback() {
         const data = await res.json();
 
         if (data.success) {
-          router.replace("/");
+          const { useAuthStore } = await import("@/store/auth");
+          await useAuthStore.getState().checkAuth();
+          router.replace("/home");
           router.refresh();
         } else {
           alert(data.message || "GitHub authentication failed.");
-          router.push("/login");
+          router.push("/auth/login");
         }
       } catch (error) {
         console.error("GitHub Auth Error:", error);
