@@ -137,7 +137,7 @@ export default function Social({
 
     return (
         <div className="flex w-full mt-3 justify-between font-mono text-foreground/50 border rounded-md px-2">
-            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1">
+            <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-2 flex-1">
                 {username || "anonymous"}
             </div>
             <div className="flex gap-5 pr-1">

@@ -8,7 +8,7 @@ export interface NetworkNode {
     id: string;
     name: string;
     username: string;
-    avatar: string;
+    avatar?: string;
     level: number;
     x?: number;
     y?: number;
@@ -16,6 +16,17 @@ export interface NetworkNode {
     followers?: number;
     following?: number;
     online?: boolean;
+}
+
+function getFallbackAvatar(id: string, username?: string): string {
+    const key = username || id || "1";
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+        hash = (hash << 5) - hash + key.charCodeAt(i);
+        hash |= 0;
+    }
+    const idx = (Math.abs(hash) % 5) + 1;
+    return `/random-pfps/pfp${idx}.jpeg`;
 }
 
 export interface NetworkEdge {
@@ -217,6 +228,16 @@ export default function SocialNet({
     const [isDragging, setIsDragging] = useState(false);
     const [hasInitializedPan, setHasInitializedPan] = useState(false);
     const dragStart = useRef({ x: 0, y: 0 });
+    const [imageErrorState, setImageErrorState] = useState<Record<string, number>>({});
+
+    const handleImageError = (nodeId: string, hadCustomAvatar: boolean) => {
+        setImageErrorState((prev) => {
+            const current = prev[nodeId] || 0;
+            const nextLevel = hadCustomAvatar && current === 0 ? 1 : 2;
+            if (current === nextLevel) return prev;
+            return { ...prev, [nodeId]: nextLevel };
+        });
+    };
 
     const { calculatedNodes, bounds } = useMemo(
         () => computeRadialLayout(nodes, edges),
@@ -355,6 +376,21 @@ export default function SocialNet({
                         const nx = node.x ?? 0;
                         const ny = node.y ?? 0;
 
+                        const rawAvatar = typeof node.avatar === "string" ? node.avatar.trim() : "";
+                        const hasCustomAvatar = Boolean(rawAvatar);
+                        const errorLevel = imageErrorState[node.id] || 0;
+
+                        let imageSrc: string | null = null;
+                        if (errorLevel >= 2) {
+                            imageSrc = null;
+                        } else if (errorLevel === 1 || !hasCustomAvatar) {
+                            imageSrc = getFallbackAvatar(node.id, node.username);
+                        } else {
+                            imageSrc = rawAvatar;
+                        }
+
+                        const initialChar = (node.name || node.username || "?").trim().charAt(0).toUpperCase() || "?";
+
                         return (
                             <g
                                 key={node.id}
@@ -388,15 +424,38 @@ export default function SocialNet({
                                     <circle cx={nx} cy={ny} r={radius} />
                                 </clipPath>
 
-                                <image
-                                    href={node.avatar}
-                                    x={nx - radius}
-                                    y={ny - radius}
-                                    width={radius * 2}
-                                    height={radius * 2}
-                                    preserveAspectRatio="xMidYMid slice"
-                                    clipPath={`url(#avatar-${node.id})`}
+                                {/* Base background circle for initials fallback */}
+                                <circle
+                                    cx={nx}
+                                    cy={ny}
+                                    r={radius}
+                                    className="fill-muted stroke-none"
                                 />
+
+                                {/* Initials fallback text */}
+                                <text
+                                    x={nx}
+                                    y={ny}
+                                    textAnchor="middle"
+                                    dominantBaseline="central"
+                                    className="fill-foreground/70 font-mono font-bold text-xs select-none pointer-events-none"
+                                >
+                                    {initialChar}
+                                </text>
+
+                                {/* Image with fallback on error or missing url */}
+                                {imageSrc && (
+                                    <image
+                                        href={imageSrc}
+                                        x={nx - radius}
+                                        y={ny - radius}
+                                        width={radius * 2}
+                                        height={radius * 2}
+                                        preserveAspectRatio="xMidYMid slice"
+                                        clipPath={`url(#avatar-${node.id})`}
+                                        onError={() => handleImageError(node.id, hasCustomAvatar)}
+                                    />
+                                )}
                             </g>
                         );
                     })}

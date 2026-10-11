@@ -3,7 +3,7 @@
 import Avatar from "../Avatar";
 import { Sora } from "next/font/google";
 import Social from "./Social";
-import { EllipsisVertical } from "lucide-react";
+// import { EllipsisVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -102,7 +102,7 @@ const PitchCard = ({
 
             <div className="flex-1 min-w-0">
                 {/* header */}
-                <div className="flex justify-between items-center">
+                {/* <div className="flex justify-between items-center">
                     <Link
                         href={`/u/${post?.author_username || ""}`}
                         data-prevent-nav
@@ -116,7 +116,7 @@ const PitchCard = ({
                         data-prevent-nav
                         className="text-foreground/50 rounded-full cursor-pointer hover:text-foreground"
                     />
-                </div>
+                </div> */}
 
                 {/* main content */}
                 <div className={`${sora.className} text-foreground/90 flex flex-col gap-2 mt-1`}>
@@ -188,8 +188,6 @@ const PitchCard = ({
                         })
                     )}
                 </div>
-
-                <hr className="mt-3" />
 
                 <div data-prevent-nav>
                     <Social

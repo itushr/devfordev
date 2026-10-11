@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Separator from "@/components/Separator";
 import SocialNet from "./SocialNet";
+import Avatar from "@/components/Avatar";
 import { useAuthStore } from "@/store/auth";
 import { useNetworkStore } from "@/store/network";
 
@@ -70,11 +71,7 @@ export default function NetworkPage() {
             <Separator />
             {selectedNode && (
                 <div className="bottom-5 z-20 flex items-center gap-3 px-4 py-5">
-                    <img
-                        src={selectedNode.avatar}
-                        alt={selectedNode.name}
-                        className="h-10 w-10 rounded-full object-cover"
-                    />
+                    <Avatar image={selectedNode.avatar} size={10} />
 
                     <div>
                         <div className="flex items-center gap-2">
