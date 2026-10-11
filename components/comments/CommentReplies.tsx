@@ -6,6 +6,7 @@ import Avatar from "@/components/Avatar";
 import { CommentItemType } from "./types";
 import { Sora } from "next/font/google";
 import { Heart } from "lucide-react";
+import Link from "next/link";
 
 const sora = Sora({
     subsets: ['latin'],
@@ -65,9 +66,12 @@ function ReplyItem({
 
     return (
         <div className="w-full bg-background px-4 py-3 flex gap-3 border rounded-lg">
-            <div className="flex flex-col justify-end relative pb-0.5">
+            <Link
+                href={`/u/${reply.author_username || ""}`}
+                className="flex flex-col justify-end relative pb-0.5 shrink-0"
+            >
                 <Avatar image={reply.author_avatar || "/random-pfps/pfp5.jpeg"} size={8} />
-            </div>
+            </Link>
 
             <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-center">
@@ -96,9 +100,12 @@ function ReplyItem({
                 </div>
 
                 <div className="flex w-full mt-3 justify-between font-mono text-foreground/50 border rounded-md px-2">
-                    <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1">
+                    <Link
+                        href={`/u/${reply.author_username || ""}`}
+                        className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1 transition-colors"
+                    >
                         <span>{reply.author_username || "anonymous"}</span>
-                    </div>
+                    </Link>
 
                     <div className="flex gap-5 pr-1 items-center">
                         <div

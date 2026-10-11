@@ -2,7 +2,7 @@ import Separator from '@/components/Separator'
 import Searchbar from './Searchbar'
 import NetworkGraph from './NetworkGraph'
 // import Trending from './Trending'
-import Contributors from './Contributors'
+import Contributors from './Welcome'
 
 const RightPanel = () => {
     return (

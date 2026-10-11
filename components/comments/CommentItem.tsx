@@ -14,6 +14,7 @@ import { EllipsisVertical, Heart, MessageCircle } from "lucide-react";
 import CommentAwardButton from "./CommentAwardButton";
 import PitchComposer from "@/components/pitchComposer/PitchComposer";
 import CommentReplies from "./CommentReplies";
+import Link from "next/link";
 
 const sora = Sora({
     subsets: ['latin'],
@@ -90,9 +91,12 @@ export default function CommentItem({
     return (
         <div className="w-full bg-background px-5 py-3 flex gap-3">
             {/* Avatar matching PitchCard */}
-            <div className="flex flex-col justify-end relative pb-0.5">
+            <Link
+                href={`/u/${comment.author_username || ""}`}
+                className="flex flex-col justify-end relative pb-0.5 shrink-0"
+            >
                 <Avatar image={comment.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} />
-            </div>
+            </Link>
 
             <div className="flex-1 min-w-0">
                 {/* Header matching PitchCard */}
@@ -182,9 +186,12 @@ export default function CommentItem({
 
                 {/* Social Bar matching PitchCard Social styling */}
                 <div className="flex w-full mt-3 justify-between font-mono text-foreground/50 border rounded-md px-2">
-                    <div className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1">
+                    <Link
+                        href={`/u/${comment.author_username || ""}`}
+                        className="flex items-center gap-2 hover:text-pink-500 cursor-pointer py-1.5 flex-1 transition-colors"
+                    >
                         <span>{comment.author_username || "anonymous"}</span>
-                    </div>
+                    </Link>
 
                     <div className="flex gap-5 pr-1 items-center">
                         {/* Author Points Award Button (Only for direct comments, only visible to post author) */}

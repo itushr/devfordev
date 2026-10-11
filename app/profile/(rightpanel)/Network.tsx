@@ -2,55 +2,31 @@
 
 import { useMemo, useState, useEffect } from "react";
 import Separator from "@/components/Separator";
-import SocialNet, { NetworkNode, NetworkEdge } from "./SocialNet";
+import SocialNet from "./SocialNet";
 import { useAuthStore } from "@/store/auth";
+import { useNetworkStore } from "@/store/network";
 
 export default function NetworkPage() {
     const { authUser } = useAuthStore();
-    const [nodes, setNodes] = useState<NetworkNode[]>([]);
-    const [edges, setEdges] = useState<NetworkEdge[]>([]);
+    const { nodes, edges, rootId, loading, fetchNetwork } = useNetworkStore();
     const [selected, setSelected] = useState<string>("");
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!authUser?.id) {
-            setLoading(false);
-            return;
-        }
+        if (!authUser?.id) return;
+        fetchNetwork(authUser.id);
+    }, [authUser?.id, fetchNetwork]);
 
-        let cancelled = false;
-        setLoading(true);
-
-        fetch(`/api/users/${authUser.id}/network?depth=3&limit=100`, {
-            credentials: "include",
-        })
-            .then((r) => r.json())
-            .then((data) => {
-                if (cancelled) return;
-                if (data.nodes && data.edges) {
-                    setNodes(data.nodes);
-                    setEdges(data.edges);
-                    setSelected(data.meta?.rootId ?? authUser.id);
-                }
-            })
-            .catch(() => {
-                // silently fail
-            })
-            .finally(() => {
-                if (!cancelled) setLoading(false);
-            });
-
-        return () => {
-            cancelled = true;
-        };
-    }, [authUser?.id]);
+    // Sync selected to rootId when graph loads
+    useEffect(() => {
+        if (rootId) setSelected(rootId);
+    }, [rootId]);
 
     const selectedNode = useMemo(
         () => nodes.find((node) => node.id === selected),
         [selected, nodes]
     );
 
-    if (loading) {
+    if (loading && nodes.length === 0) {
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden">
                 <div className="flex-1 flex items-center justify-center min-h-125">

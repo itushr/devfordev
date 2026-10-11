@@ -1,51 +1,26 @@
 "use client";
 
 import SocialNet from "@/app/profile/(rightpanel)/SocialNet";
-import { NetworkNode, NetworkEdge } from "@/app/profile/(rightpanel)/SocialNet";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth";
+import { useNetworkStore } from "@/store/network";
 
 const NetworkGraph = () => {
     const { authUser } = useAuthStore();
-    const [nodes, setNodes] = useState<NetworkNode[]>([]);
-    const [edges, setEdges] = useState<NetworkEdge[]>([]);
+    const { nodes, edges, rootId, loading, fetchNetwork } = useNetworkStore();
     const [selected, setSelected] = useState<string>("");
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!authUser?.id) {
-            setLoading(false);
-            return;
-        }
+        if (!authUser?.id) return;
+        fetchNetwork(authUser.id);
+    }, [authUser?.id, fetchNetwork]);
 
-        let cancelled = false;
-        setLoading(true);
+    // Sync selected node to rootId when graph loads
+    useEffect(() => {
+        if (rootId) setSelected(rootId);
+    }, [rootId]);
 
-        fetch(`/api/users/${authUser.id}/network?depth=3&limit=100`, {
-            credentials: "include",
-        })
-            .then((r) => r.json())
-            .then((data) => {
-                if (cancelled) return;
-                if (data.nodes && data.edges) {
-                    setNodes(data.nodes);
-                    setEdges(data.edges);
-                    setSelected(data.meta?.rootId ?? authUser.id);
-                }
-            })
-            .catch(() => {
-                // silently fail — graph stays empty
-            })
-            .finally(() => {
-                if (!cancelled) setLoading(false);
-            });
-
-        return () => {
-            cancelled = true;
-        };
-    }, [authUser?.id]);
-
-    if (loading) {
+    if (loading && nodes.length === 0) {
         return (
             <div className="h-80 flex items-center justify-center">
                 <div className="flex gap-1.5">
@@ -65,7 +40,9 @@ const NetworkGraph = () => {
         return (
             <div className="h-80 flex items-center justify-center">
                 <p className="text-xs text-muted-foreground">
-                    {authUser ? "No connections yet. Follow someone to see your network." : "Sign in to view your network."}
+                    {authUser
+                        ? "No connections yet. Follow someone to see your network."
+                        : "Sign in to view your network."}
                 </p>
             </div>
         );

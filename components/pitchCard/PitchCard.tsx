@@ -5,6 +5,7 @@ import { Sora } from "next/font/google";
 import Social from "./Social";
 import { EllipsisVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
     ImageSlider,
     ImageLayer,
@@ -90,16 +91,26 @@ const PitchCard = ({
                 !disableNavigation ? "cursor-pointer hover:bg-card/20" : ""
             }`}
         >
-            <div className="flex flex-col justify-end relative pb-0.5" data-prevent-nav>
+            <Link
+                href={`/u/${post?.author_username || ""}`}
+                data-prevent-nav
+                className="flex flex-col justify-end relative pb-0.5 shrink-0"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <Avatar image={post?.author_avatar || "/random-pfps/pfp5.jpeg"} size={9} />
-            </div>
+            </Link>
 
             <div className="flex-1 min-w-0">
                 {/* header */}
                 <div className="flex justify-between items-center">
-                    <div className="font-mono text-foreground/50 mb-1">
+                    <Link
+                        href={`/u/${post?.author_username || ""}`}
+                        data-prevent-nav
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-mono text-foreground/50 mb-1 hover:text-pink-500 transition-colors"
+                    >
                         {post?.author_name || "Author"} ~ {formatDate(post?.createdAt)} ~ {post?.points ?? "X"} pts
-                    </div>
+                    </Link>
                     <EllipsisVertical
                         size={16}
                         data-prevent-nav
