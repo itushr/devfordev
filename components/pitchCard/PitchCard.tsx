@@ -189,6 +189,8 @@ const PitchCard = ({
                     )}
                 </div>
 
+                <hr className="mt-3" />
+
                 <div data-prevent-nav>
                     <Social
                         postId={post?._id}
