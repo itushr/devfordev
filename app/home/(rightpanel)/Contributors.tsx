@@ -23,6 +23,16 @@ const contributors: Contributor[] = [
     username: "@iamtushar",
     contributions: 12,
   },
+  {
+    name: "Tushar",
+    username: "@iamtushar",
+    contributions: 12,
+  },
+  {
+    name: "Tushar",
+    username: "@iamtushar",
+    contributions: 12,
+  },
 ];
 
 const Contributors = () => {
