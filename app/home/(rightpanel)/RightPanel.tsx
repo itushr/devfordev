@@ -9,8 +9,8 @@ const RightPanel = () => {
         <div className="w-100 border-x sticky top-0 h-dvh">
             <Searchbar />
             <NetworkGraph />
-            <Separator />
-            <Trending />
+            {/* <Separator /> */}
+            {/* <Trending /> */}
             <Separator />
             <Contributors />
             <Separator />
