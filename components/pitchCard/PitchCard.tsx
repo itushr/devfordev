@@ -33,7 +33,6 @@ export type PostItem = {
     author_name: string;
     author_username: string;
     author_avatar?: string;
-    points: number;
     slug?: string;
     data: PostDataBlock[];
     stats?: {
@@ -109,7 +108,7 @@ const PitchCard = ({
                         onClick={(e) => e.stopPropagation()}
                         className="font-mono text-foreground/50 mb-1 hover:text-pink-500 transition-colors"
                     >
-                        {post?.author_name || "Author"} ~ {formatDate(post?.createdAt)} ~ {post?.points ?? "X"} pts
+                        {post?.author_name || "Author"} ~ {formatDate(post?.createdAt)}
                     </Link>
                     <EllipsisVertical
                         size={16}

@@ -11,8 +11,6 @@ type RecentUser = {
     name: string;
     username: string;
     avatar: string;
-    points: number;
-    rating: number;
 };
 
 const Contributors = () => {

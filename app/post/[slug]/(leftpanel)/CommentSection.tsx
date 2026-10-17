@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import PitchComposer from "@/components/pitchComposer/PitchComposer";
 import CommentList from "@/components/comments/CommentList";
-import { CommentItemType } from "@/components/comments/types";
+import { CommentItemType, CommentRating } from "@/components/comments/types";
 import Separator from "@/components/Separator";
 
 export default function CommentSection({
@@ -67,16 +67,10 @@ export default function CommentSection({
         setComments((prev) => [newComment, ...prev]);
     };
 
-    const handlePointsChange = (
-        commentId: string,
-        awarded: boolean,
-        points: number
-    ) => {
+    const handleRatingChange = (commentId: string, rating: CommentRating) => {
         setComments((prev) =>
             prev.map((c) =>
-                c._id === commentId
-                    ? { ...c, pointsAwarded: awarded, points }
-                    : c
+                c._id === commentId ? { ...c, rating } : c
             )
         );
     };
@@ -99,7 +93,7 @@ export default function CommentSection({
                 postAuthorId={postAuthorId}
                 isPostAuthor={isPostAuthor}
                 loading={loading}
-                onPointsChange={handlePointsChange}
+                onRatingChange={handleRatingChange}
             />
         </div>
     );

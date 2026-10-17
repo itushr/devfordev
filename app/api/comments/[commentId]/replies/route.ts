@@ -156,7 +156,7 @@ export async function POST(
             }
         }
 
-        // Replies are always points free
+        // Replies are not ratable — only top-level comments can be rated
         const newReply = await Comment.create({
             post_id: parentComment.post_id,
             parent_id: parentComment._id,
@@ -167,8 +167,7 @@ export async function POST(
             content: content || "",
             data: data || [],
             replyToUsername: replyToUsername || parentComment.author_username,
-            points: 0,
-            pointsAwarded: false,
+            rating: null,
             likes: 0,
             repliesCount: 0,
         });

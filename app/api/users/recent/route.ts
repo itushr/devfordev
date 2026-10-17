@@ -13,7 +13,7 @@ export async function GET() {
         const users = await User.find({})
             .sort({ createdAt: -1 })
             .limit(5)
-            .select("_id name username avatar points rating createdAt")
+            .select("_id name username avatar createdAt")
             .lean();
 
         const result = (users as any[]).map((u) => ({
@@ -21,8 +21,6 @@ export async function GET() {
             name: u.name ?? "",
             username: u.username ?? "",
             avatar: u.avatar ?? "",
-            points: u.points ?? 0,
-            rating: u.rating ?? 0,
         }));
 
         return NextResponse.json({ users: result });

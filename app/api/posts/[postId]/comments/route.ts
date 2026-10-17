@@ -49,7 +49,7 @@ export async function GET(
         }
 
         const comments = await Comment.find(query)
-            .sort({ pointsAwarded: -1, createdAt: -1, _id: -1 })
+            .sort({ createdAt: -1, _id: -1 })
             .limit(limit)
             .lean();
 
@@ -193,8 +193,7 @@ export async function POST(
             content: content || "",
             data: data || [],
             replyToUsername: replyToUsername || post.author_username,
-            points: 0,
-            pointsAwarded: false,
+            rating: null,
             likes: 0,
             repliesCount: 0,
         });

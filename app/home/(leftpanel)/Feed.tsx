@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import PitchCard, { PostItem } from "@/components/pitchCard/PitchCard";
 import Separator from "@/components/Separator";
 import Skeleton from "@/components/pitchCard/Skeleton";
-import { useFeedStore } from "@/store/feed";
+import { useFeedStore, FeedMode } from "@/store/feed";
 
-export default function Feed() {
-    const { posts, loading, error, initialized, fetchPosts, prependPost } = useFeedStore();
+export default function Feed({ mode }: { mode: FeedMode }) {
+    const { posts, loading, error, initialized, hasMore, fetchPosts, fetchMore, prependPost } =
+        useFeedStore();
+
+    const sentinelRef = useRef<HTMLDivElement>(null);
 
     // Fetch on first mount — no-op if already cached
     useEffect(() => {
@@ -21,7 +24,6 @@ export default function Feed() {
             if (customEvent.detail?._id) {
                 prependPost(customEvent.detail);
             } else {
-                // Full reload only if we have no detail
                 useFeedStore.getState().reset();
                 useFeedStore.getState().fetchPosts();
             }
@@ -30,6 +32,27 @@ export default function Feed() {
         window.addEventListener("pitch-created", handlePitchCreated);
         return () => window.removeEventListener("pitch-created", handlePitchCreated);
     }, [prependPost]);
+
+    // Infinite scroll — observe sentinel element
+    const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+            const [entry] = entries;
+            if (entry.isIntersecting && hasMore && !loading) {
+                fetchMore();
+            }
+        },
+        [fetchMore, hasMore, loading]
+    );
+
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+        const observer = new IntersectionObserver(handleObserver, {
+            threshold: 0.1,
+        });
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [handleObserver]);
 
     if (loading && !initialized) {
         return (
@@ -79,6 +102,26 @@ export default function Feed() {
                     <Separator />
                 </div>
             ))}
+
+            {/* Infinite scroll sentinel */}
+            <div ref={sentinelRef} className="h-4" />
+
+            {loading && initialized && (
+                <div className="w-full">
+                    {[...Array(2).keys()].map((_, i) => (
+                        <div key={i}>
+                            <Skeleton />
+                            <Separator />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {!hasMore && posts.length > 0 && (
+                <p className="py-8 text-center font-mono text-xs text-foreground/30">
+                    {mode === "recent" ? "You've reached the beginning." : "You're all caught up."}
+                </p>
+            )}
         </div>
     );
 }

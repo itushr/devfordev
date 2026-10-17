@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Avatar from "@/components/Avatar";
 import { Sora } from "next/font/google";
-import { CommentItemType } from "./types";
+import { CommentItemType, CommentRating } from "./types";
 import { CodeBlock } from "@/components/pitchCard/CodeBlock";
 import {
     ImageSlider,
@@ -11,7 +11,7 @@ import {
     Divider,
 } from "@/components/ui/image-comparison";
 import { EllipsisVertical, Heart, MessageCircle } from "lucide-react";
-import CommentAwardButton from "./CommentAwardButton";
+import CommentRatingButton from "./CommentRatingButton";
 import PitchComposer from "@/components/pitchComposer/PitchComposer";
 import CommentReplies from "./CommentReplies";
 import Link from "next/link";
@@ -31,24 +31,40 @@ const formatDate = (dateString?: string) => {
     return `${day}/${month}/${year}`;
 };
 
+const RATING_BADGE: Record<NonNullable<CommentRating>, { label: string; className: string }> = {
+    bad: {
+        label: "✗ Bad",
+        className: "bg-red-500/10 text-red-400 border border-red-500/30",
+    },
+    good: {
+        label: "✓ Good",
+        className: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
+    },
+    best: {
+        label: "★ Best",
+        className: "bg-amber-500/10 text-amber-400 border border-amber-500/30",
+    },
+};
+
 export default function CommentItem({
     comment,
     postAuthorId,
     isPostAuthor = false,
     isDirectComment = true,
-    onPointsChange,
+    onRatingChange,
 }: {
     comment: CommentItemType;
     postAuthorId?: string;
     isPostAuthor?: boolean;
     isDirectComment?: boolean;
-    onPointsChange?: (commentId: string, awarded: boolean, points: number) => void;
+    onRatingChange?: (commentId: string, rating: CommentRating) => void;
 }) {
     const [isLiked, setIsLiked] = useState<boolean>(comment.likedByMe ?? false);
     const [likesCount, setLikesCount] = useState<number>(comment.likes ?? 0);
     const [repliesCount, setRepliesCount] = useState<number>(comment.repliesCount ?? 0);
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [newReplies, setNewReplies] = useState<CommentItemType[]>([]);
+    const [currentRating, setCurrentRating] = useState<CommentRating>(comment.rating);
 
     const handleLikeClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -66,7 +82,6 @@ export default function CommentItem({
             });
 
             if (!res.ok) {
-                // Revert on error
                 setIsLiked(!nextLiked);
                 setLikesCount((prev) => Math.max(0, prev + (nextLiked ? -1 : 1)));
             } else {
@@ -88,6 +103,13 @@ export default function CommentItem({
         setIsReplying(false);
     };
 
+    const handleRatingChange = (rating: CommentRating) => {
+        setCurrentRating(rating);
+        onRatingChange?.(comment._id, rating);
+    };
+
+    const ratingBadge = currentRating ? RATING_BADGE[currentRating] : null;
+
     return (
         <div className="w-full bg-background px-5 py-3 flex gap-3">
             {/* Avatar matching PitchCard */}
@@ -99,14 +121,12 @@ export default function CommentItem({
             </Link>
 
             <div className="flex-1 min-w-0">
-                {/* Header matching PitchCard */}
+                {/* Header */}
                 <div className="flex justify-between items-center">
                     <div className="font-mono text-foreground/50 mb-1 flex items-center gap-1.5 flex-wrap">
                         <span>{comment.author_name || "Author"}</span>
                         <span>~</span>
                         <span>{formatDate(comment.createdAt)}</span>
-                        <span>~</span>
-                        <span>{comment.points ?? 0} pts</span>
 
                         {postAuthorId && comment.author_id === postAuthorId && (
                             <span className="ml-1 px-1.5 py-0.2 bg-foreground/10 text-foreground/70 rounded text-xs font-mono">
@@ -114,9 +134,9 @@ export default function CommentItem({
                             </span>
                         )}
 
-                        {comment.pointsAwarded && (
-                            <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/30">
-                                ★ Points Approved
+                        {ratingBadge && (
+                            <span className={`ml-1 px-2 py-0.5 rounded-full text-xs font-mono font-medium ${ratingBadge.className}`}>
+                                {ratingBadge.label}
                             </span>
                         )}
                     </div>
@@ -126,7 +146,7 @@ export default function CommentItem({
                     />
                 </div>
 
-                {/* Main Content matching PitchCard font-size & styling */}
+                {/* Main Content */}
                 <div className={`${sora.className} text-foreground/90 flex flex-col gap-2 mt-1`}>
                     {comment.content && (
                         <div className="whitespace-pre-wrap wrap-break-word leading-relaxed">
@@ -134,7 +154,7 @@ export default function CommentItem({
                         </div>
                     )}
 
-                    {/* Rich data blocks (images, code, poll) */}
+                    {/* Rich data blocks */}
                     {comment.data && comment.data.length > 0 && (
                         comment.data.map((block, idx) => {
                             if (block.type === "text" && block.text && block.text !== comment.content) {
@@ -184,7 +204,7 @@ export default function CommentItem({
                     )}
                 </div>
 
-                {/* Social Bar matching PitchCard Social styling */}
+                {/* Social Bar */}
                 <div className="flex w-full mt-3 justify-between font-mono text-foreground/50 border rounded-md px-2">
                     <Link
                         href={`/u/${comment.author_username || ""}`}
@@ -194,15 +214,12 @@ export default function CommentItem({
                     </Link>
 
                     <div className="flex gap-5 pr-1 items-center">
-                        {/* Author Points Award Button (Only for direct comments, only visible to post author) */}
+                        {/* Rating buttons — only for direct comments, only visible to post author */}
                         {isDirectComment && isPostAuthor && (
-                            <CommentAwardButton
+                            <CommentRatingButton
                                 commentId={comment._id}
-                                pointsAwarded={comment.pointsAwarded}
-                                points={comment.points}
-                                onPointsChange={(awarded, pts) =>
-                                    onPointsChange?.(comment._id, awarded, pts)
-                                }
+                                initialRating={currentRating}
+                                onRatingChange={handleRatingChange}
                             />
                         )}
 
@@ -233,7 +250,7 @@ export default function CommentItem({
                     </div>
                 </div>
 
-                {/* Inline PitchComposer for replying (no terminal!) */}
+                {/* Inline reply composer */}
                 {isReplying && (
                     <div className="mt-3 border rounded-xl overflow-hidden bg-card/10">
                         <PitchComposer

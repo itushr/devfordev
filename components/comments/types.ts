@@ -1,5 +1,7 @@
 import { PostDataBlock } from "@/components/pitchCard/PitchCard";
 
+export type CommentRating = "bad" | "good" | "best" | null;
+
 export type CommentItemType = {
     _id: string;
     post_id: string;
@@ -10,8 +12,7 @@ export type CommentItemType = {
     author_avatar?: string;
     content: string;
     data?: PostDataBlock[];
-    points: number;
-    pointsAwarded: boolean;
+    rating: CommentRating;
     likes: number;
     repliesCount: number;
     replyToUsername?: string;

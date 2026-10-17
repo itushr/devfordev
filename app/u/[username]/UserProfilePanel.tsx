@@ -19,8 +19,7 @@ type ProfileUser = {
     username: string;
     avatar: string;
     description: string;
-    points: number;
-    rating: number;
+    contributions?: number;
     createdAt: string;
 };
 
@@ -108,7 +107,7 @@ export default function UserProfilePanel() {
         );
     }
 
-    const ratingVal = Math.round(profileUser.rating ?? 0);
+    const contributionsVal = profileUser.contributions ?? 0;
 
     return (
         <div className="w-150 border-x min-h-dvh">
@@ -126,7 +125,7 @@ export default function UserProfilePanel() {
                             style={{ backgroundImage: `url('${profileUser.avatar || "/random-pfps/pfp5.jpeg"}')` }}
                         >
                             <div className="bg-foreground text-background w-fit flex items-center px-3 py-0.5 gap-0.5 rounded-2xl translate-y-2 border">
-                                <span className="text-xs font-bold">{ratingVal}</span>
+                                <span className="text-xs font-bold">{contributionsVal}</span>
                                 <Star size={10} className="fill-background" />
                             </div>
                         </div>
@@ -166,9 +165,9 @@ export default function UserProfilePanel() {
                             </div>
                             <div>
                                 <div className={`${elsie.className} text-3xl text-center`}>
-                                    {profileUser.points ?? 0}
+                                    {contributionsVal}
                                 </div>
-                                <div className="text-xs text-foreground/80 text-center font-mono">points</div>
+                                <div className="text-xs text-foreground/80 text-center font-mono">contributions</div>
                             </div>
                             <div>
                                 <div className={`${elsie.className} text-3xl text-center`}>

@@ -114,12 +114,6 @@ const PostSchema = new Schema(
             type: String,
         },
 
-        points: {
-            type: Number,
-            default: 10,
-            min: 0,
-        },
-
         slug: {
             type: String,
             trim: true,

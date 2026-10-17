@@ -80,8 +80,6 @@ export async function POST(req: NextRequest) {
             author_username: user.user_username,
             author_avatar: user.user_avatar_url,
 
-            points: 10,
-
             data,
 
             stats: {

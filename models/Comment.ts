@@ -91,16 +91,10 @@ const CommentSchema = new Schema(
             default: [],
         },
 
-        points: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-
-        pointsAwarded: {
-            type: Boolean,
-            default: false,
-            index: true,
+        rating: {
+            type: String,
+            enum: ["bad", "good", "best"],
+            default: null,
         },
 
         likes: {

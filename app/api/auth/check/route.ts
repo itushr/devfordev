@@ -27,6 +27,9 @@ export async function GET() {
             );
         }
 
+        const { getUserContributionMetrics } = await import("@/lib/feed/contributions");
+        const metrics = await getUserContributionMetrics(user._id.toString());
+
         const response = NextResponse.json({
             success: true,
             message: "Auto Login successful.",
@@ -36,9 +39,7 @@ export async function GET() {
                 avatar: user.avatar,
                 username: user.username,
                 email: user.email,
-                points: user.points,
-                rating: user.rating,
-                rating_count: user.ratingCount,
+                contributions: metrics.totalReceived,
                 description: user.description,
                 createdAt: user.createdAt,
             }

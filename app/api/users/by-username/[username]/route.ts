@@ -5,6 +5,7 @@ import User from "@/models/User";
 import Post from "@/models/Post";
 import PostLike from "@/models/PostLike";
 import Follow from "@/models/Follow";
+import { getUserContributionMetrics } from "@/lib/feed/contributions";
 
 function getAuthUserId(req: NextRequest): string | null {
     const fromHeader = req.headers.get("user_id");
@@ -37,7 +38,7 @@ export async function GET(
         await connectDB();
 
         const user = await User.findOne({ username: username.toLowerCase() })
-            .select("_id name username avatar description points rating ratingCount createdAt")
+            .select("_id name username avatar description createdAt")
             .lean();
 
         if (!user) {
@@ -47,7 +48,7 @@ export async function GET(
         const u = user as any;
         const targetId = u._id.toString();
 
-        const [followersCount, followingCount, isFollowingDoc, rawPosts] = await Promise.all([
+        const [followersCount, followingCount, isFollowingDoc, rawPosts, contributionMetrics] = await Promise.all([
             Follow.countDocuments({ following_id: targetId }),
             Follow.countDocuments({ follower_id: targetId }),
             actorId && actorId !== targetId
@@ -56,6 +57,7 @@ export async function GET(
             Post.find({ author_id: targetId })
                 .sort({ createdAt: -1 })
                 .lean(),
+            getUserContributionMetrics(targetId),
         ]);
 
         // Compute likedByMe for each post
@@ -77,7 +79,6 @@ export async function GET(
             author_name: p.author_name,
             author_username: p.author_username,
             author_avatar: p.author_avatar,
-            points: p.points,
             slug: p.slug,
             data: p.data,
             stats: p.stats,
@@ -93,8 +94,8 @@ export async function GET(
                 username: u.username ?? "",
                 avatar: u.avatar ?? "",
                 description: u.description ?? "",
-                points: u.points ?? 0,
-                rating: u.rating ?? 0,
+                contributions: contributionMetrics.totalReceived,
+                contributionMetrics,
                 createdAt: u.createdAt,
             },
             followersCount,

@@ -1,6 +1,6 @@
 "use client";
 
-import { CommentItemType } from "./types";
+import { CommentItemType, CommentRating } from "./types";
 import CommentItem from "./CommentItem";
 import Separator from "@/components/Separator";
 import Skeleton from "@/components/pitchCard/Skeleton";
@@ -11,13 +11,13 @@ export default function CommentList({
     postAuthorId,
     isPostAuthor,
     loading,
-    onPointsChange,
+    onRatingChange,
 }: {
     comments: CommentItemType[];
     postAuthorId?: string;
     isPostAuthor?: boolean;
     loading?: boolean;
-    onPointsChange?: (commentId: string, awarded: boolean, points: number) => void;
+    onRatingChange?: (commentId: string, rating: CommentRating) => void;
 }) {
     if (loading) {
         return (
@@ -52,7 +52,7 @@ export default function CommentList({
                         comment={comment}
                         postAuthorId={postAuthorId}
                         isPostAuthor={isPostAuthor}
-                        onPointsChange={onPointsChange}
+                        onRatingChange={onRatingChange}
                     />
                     <Separator />
                 </div>

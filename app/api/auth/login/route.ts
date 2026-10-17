@@ -71,9 +71,7 @@ export async function POST(req: Request) {
                 name: user.name,
                 username: user.username,
                 avatar: user.avatar,
-                points: user.points,
-                rating: user.rating,
-                rating_count: user.ratingCount
+                contributions: 0,
             }
         });
 
